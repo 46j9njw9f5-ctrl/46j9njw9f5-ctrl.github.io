@@ -186,6 +186,38 @@ a {
   max-width: 900px;
 }
 
+.legend {
+  margin: 4px 2px 10px;
+  font-size: 12.5px;
+}
+.legend > summary {
+  cursor: pointer;
+  color: var(--text-dim);
+  font-weight: 600;
+  padding: 6px 0;
+  user-select: none;
+}
+.legend__body {
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 4px;
+  max-width: 900px;
+}
+.legend__grades {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.legend__body p {
+  margin: 0;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
 /* ---------- grid + card ---------- */
 .grid {
   display: grid;
@@ -259,6 +291,34 @@ a {
   font-size: 10.5px;
   color: var(--text-faint);
   margin-top: 2px;
+}
+
+.card__grades {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+.card__grades .grade {
+  flex: 1;
+  min-width: 88px;
+}
+.card__tagline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.card__fact {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.card__source {
+  font-size: 11px;
+  color: var(--text-faint);
 }
 
 .card__actions {
@@ -405,6 +465,97 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin: 22px 0 10px;
+}
+
+/* detail tabs */
+.tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 18px 0 4px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+.tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-faint);
+  padding: 9px 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab:hover {
+  color: var(--text);
+}
+.tab--active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+.tab-body {
+  padding-top: 6px;
+}
+
+/* overview grades */
+.grade-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 18px 0 6px;
+}
+.grade-cell {
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 12px;
+  display: flex;
+  justify-content: center;
+}
+.verdict--lead {
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+/* grade badge (S/A/B/C/D) */
+.grade {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.grade__letter {
+  font-weight: 800;
+  border: 1.5px solid;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+.grade--md .grade__letter {
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+}
+.grade--sm .grade__letter {
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+.grade__label {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.grade--sm .grade__label {
+  font-size: 10px;
+}
+.grade__score {
+  font-size: 15px;
+  font-weight: 800;
+}
+.grade--sm .grade__score {
+  font-size: 13px;
 }
 
 /* score summary tiles */

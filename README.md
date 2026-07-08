@@ -16,7 +16,14 @@
 4. **🌱 働きやすさ** — 残業の少なさ・有給・定着・勤続・多様性からワークライフ重視のスコア
 5. **🛡 ブラック度** — 労働指標から危険度を算出し、危険な企業を警告
 
-![real-multi](docs/real-multi.png)
+## 見やすさ（人間中心のUI）
+
+- **グレード表示（S / A / B / C / D）** — 数値だけでなく一目でわかる評価。すべて「高い＝良い」向きに統一。
+- **総合タブ** — 詳細画面は総合／将来性／生産性・財務／働きやすさ／リスクのタブ構成。まず
+  **平易な一言コメント**（例:「将来性が高く、働きやすい会社です」）と強み・気になる点を要約表示。
+- **スコアの見方（凡例）** — 各軸の意味とグレードの基準をいつでも確認可能。
+
+![overview](docs/overview-detail.png)
 
 ## 実データ化（Wikidata）
 
@@ -32,6 +39,23 @@
 ```bash
 node scripts/fetch-companies.mjs   # Wikidata から実データを再取得
 ```
+
+### 実労働データの連携（トークン取得後に有効化）
+
+労働環境（残業・離職率・有給・平均年収）は、公的データの連携で実名企業にも表示できます。
+受け皿は実装済みで、トークン/CSV を用意して 1 コマンドで流し込めます（詳細は
+[`src/data/sources/README.md`](src/data/sources/README.md)）。
+
+```bash
+cp .env.example .env                 # gBizINFO / しょくばらぼ(CSV) / EDINET を設定
+node scripts/enrich-labor.mjs        # 設定した分だけ metrics / 平均年収を追記（未設定なら no-op）
+```
+
+| ソース | 取得データ | 認証 |
+| --- | --- | --- |
+| gBizINFO（経産省） | 平均勤続年数・女性管理職比率 ほか | 無料トークン |
+| しょくばらぼ（厚労省） | 平均残業時間・有給取得率・離職率 | 一括CSV |
+| EDINET（金融庁） | 平均年間給与・平均勤続年数（上場） | 無料APIキー |
 
 ## 主な機能
 
@@ -99,7 +123,7 @@ node scripts/fetch-companies.mjs   # Wikidata から実データを再取得
 
 - Vite + React + TypeScript
 - スタイルは自前の CSS デザインシステム（依存最小・ビルド安定）
-- Vitest（各評価エンジンのユニットテスト 29 件）
+- Vitest（各評価エンジンのユニットテスト 32 件）
 - 実データ: Wikidata SPARQL（`scripts/fetch-companies.mjs` → `companies.generated.json`）
 - データ層を分離（`src/data/index.ts`）。実データ／デモを切替でき、将来 API / DB / ユーザー投稿へ拡張可能
 

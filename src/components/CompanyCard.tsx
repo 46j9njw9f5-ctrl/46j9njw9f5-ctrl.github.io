@@ -6,7 +6,7 @@ import type {
   WorkabilityEvaluation,
 } from '../types'
 import { formatYen } from '../ui'
-import { Avatar, GrowthBadge, GrowthDonut } from './Bits'
+import { Avatar, GradeBadge, GrowthBadge } from './Bits'
 
 interface Props {
   company: Company
@@ -44,40 +44,33 @@ export function CompanyCard({
             {company.industry}・{company.location}・従業員{company.employees.toLocaleString()}名
           </div>
         </div>
+        {isFavorite && <span style={{ color: 'var(--caution)', fontSize: 18 }}>★</span>}
       </div>
 
-      <div className="score-wrap">
-        <GrowthDonut growth={growth} />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
-          <GrowthBadge growth={growth} />
-          <span style={{ fontSize: 12, color: 'var(--text-faint)' }}>
-            {growth.revenueCagr !== null
+      {/* 一目でわかるグレード */}
+      <div className="card__grades">
+        <GradeBadge size="sm" score={growth.growthScore} label="将来性" />
+        {workability ? (
+          <GradeBadge size="sm" score={workability.score} label="働きやすさ" />
+        ) : (
+          productivity.score !== null && <GradeBadge size="sm" score={productivity.score} label="生産性" />
+        )}
+        {evaluation && <GradeBadge size="sm" score={evaluation.whiteScore} label="安全度" />}
+      </div>
+
+      <div className="card__tagline">
+        <GrowthBadge growth={growth} />
+        <span className="card__fact">
+          {evaluation && evaluation.redFlags.length > 0
+            ? `⚠ 危険信号 ${evaluation.redFlags.length}件`
+            : growth.revenueCagr !== null
               ? `売上 年率 ${growth.revenueCagr.toFixed(1)}%`
-              : company.founded
-                ? `設立 ${company.founded}年`
-                : company.listed
-                  ? '上場企業'
-                  : '非上場'}
-          </span>
-          {evaluation && workability ? (
-            <span style={{ fontSize: 12, color: 'var(--text-faint)' }}>
-              働きやすさ <b style={{ color: 'var(--text)' }}>{workability.score}</b>
-              {' ・ '}
-              <span style={{ color: evaluation.redFlags.length ? 'var(--danger)' : 'var(--text-faint)' }}>
-                ブラック度 {evaluation.blackScore}
-                {evaluation.redFlags.length > 0 ? `⚠${evaluation.redFlags.length}` : ''}
-              </span>
-            </span>
-          ) : (
-            productivity.score !== null && (
-              <span style={{ fontSize: 12, color: 'var(--text-faint)' }}>
-                生産性 <b style={{ color: 'var(--text)' }}>{productivity.score}</b>
-                {' ・ 一人当たり '}
-                {formatYen(productivity.revenuePerEmployee)}
-              </span>
-            )
-          )}
-        </div>
+              : productivity.revenuePerEmployee !== null
+                ? `一人当たり ${formatYen(productivity.revenuePerEmployee)}`
+                : company.founded
+                  ? `設立 ${company.founded}年`
+                  : ''}
+        </span>
       </div>
 
       {company.blurb && <p className="card__blurb">{company.blurb}</p>}
@@ -99,12 +92,12 @@ export function CompanyCard({
       </div>
 
       {company.source && (
-        <div style={{ fontSize: 11, color: 'var(--text-faint)' }}>
-          出典: {company.source.name}（{company.source.license}）
+        <div className="card__source">
+          出典: {company.source.name}
           {company.website && (
             <>
               {' ・ '}
-              <a href={company.website} target="_blank" rel="noreferrer">
+              <a href={company.website} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
                 公式サイト
               </a>
             </>

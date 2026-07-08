@@ -182,6 +182,24 @@ export default function App() {
       </div>
       <div className="dataset-desc">{dataset.description}</div>
 
+      <details className="legend">
+        <summary>スコアの見方（グレード S〜D）</summary>
+        <div className="legend__body">
+          <div className="legend__grades">
+            <span className="legend__g" style={{ color: 'var(--excellent)' }}>S 非常に良い</span>
+            <span className="legend__g" style={{ color: 'var(--excellent)' }}>A 良い</span>
+            <span className="legend__g" style={{ color: 'var(--standard)' }}>B 標準以上</span>
+            <span className="legend__g" style={{ color: 'var(--caution)' }}>C 標準</span>
+            <span className="legend__g" style={{ color: 'var(--danger)' }}>D 要注意</span>
+          </div>
+          <p>
+            各スコアは 0〜100 で、<b>高いほど良い向き</b>に揃えています（安全度＝ブラック度の裏返し）。
+            <b>将来性</b>＝成長の見込み／<b>生産性</b>＝一人当たり売上／<b>働きやすさ</b>＝残業・有給・定着など／
+            <b>安全度</b>＝労働環境の健全性。グレードは根拠つきで、詳細画面のタブから確認できます。
+          </p>
+        </div>
+      </details>
+
       <div className="controls">
         <input
           className="input"

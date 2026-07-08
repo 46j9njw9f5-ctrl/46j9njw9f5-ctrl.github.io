@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type {
   Company,
   Evaluation,
@@ -6,8 +7,9 @@ import type {
   StockSnapshot,
   WorkabilityEvaluation,
 } from '../types'
+import { buildOverview } from '../engine/overview'
 import { formatYen, growthColor, potentialColor, riskColor } from '../ui'
-import { Avatar, Donut, GrowthBadge, GrowthDonut, RiskBadge, ScoreDonut, Sparkline } from './Bits'
+import { Avatar, Donut, GradeBadge, GrowthBadge, GrowthDonut, RiskBadge, ScoreDonut, Sparkline } from './Bits'
 
 interface Props {
   company: Company
@@ -29,8 +31,18 @@ export function CompanyDetail({
   onClose,
 }: Props) {
   const m = company.metrics
-  const showProductivity = productivity.score !== null
-  const showStock = stock.hasData
+  const showMoney = productivity.score !== null || stock.hasData
+  const overview = buildOverview({ company, growth, productivity, stock, evaluation, workability })
+
+  const tabs: { key: string; label: string }[] = [
+    { key: 'overview', label: '総合' },
+    { key: 'growth', label: '🚀 将来性' },
+  ]
+  if (showMoney) tabs.push({ key: 'money', label: '📈 生産性・財務' })
+  if (workability) tabs.push({ key: 'work', label: '🌱 働きやすさ' })
+  if (evaluation) tabs.push({ key: 'risk', label: '🛡 リスク' })
+
+  const [tab, setTab] = useState('overview')
 
   return (
     <div className="overlay" onClick={onClose}>
@@ -42,8 +54,8 @@ export function CompanyDetail({
             <div className="card__meta">
               {company.industry}・{company.location}・
               {company.listed ? '上場' : '非上場'}
-              {company.founded ? `・設立${company.founded}年` : ''}・
-              従業員{company.employees.toLocaleString()}名
+              {company.founded ? `・設立${company.founded}年` : ''}・従業員
+              {company.employees.toLocaleString()}名
             </div>
           </div>
           <button className="modal__close" onClick={onClose} aria-label="閉じる">
@@ -51,136 +63,158 @@ export function CompanyDetail({
           </button>
         </div>
 
-        {/* スコアサマリー */}
-        <div className="summary-row">
-          <SummaryTile value={growth.growthScore} color={growthColor(growth.growthScore)} label="将来性" />
-          {showProductivity && (
-            <SummaryTile value={productivity.score!} color={growthColor(productivity.score!)} label="生産性" />
-          )}
-          {workability && (
-            <SummaryTile value={workability.score} color={growthColor(workability.score)} label="働きやすさ" />
-          )}
-          {evaluation && (
-            <SummaryTile value={evaluation.whiteScore} color={growthColor(evaluation.whiteScore)} label="ホワイト度" />
-          )}
+        {/* タブ */}
+        <div className="tabs">
+          {tabs.map((t) => (
+            <button
+              key={t.key}
+              className={`tab ${tab === t.key ? 'tab--active' : ''}`}
+              onClick={() => setTab(t.key)}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
 
-        {/* ===== 将来性 ===== */}
-        <div className="section-title">🚀 将来性分析</div>
-        <div className="score-wrap">
-          <GrowthDonut growth={growth} size={76} />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <GrowthBadge growth={growth} />
-            <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
-              将来性スコア <b style={{ color: 'var(--text)' }}>{growth.growthScore}</b> / 100
-            </span>
-          </div>
-        </div>
-        <div className="verdict" style={{ marginTop: 14 }}>
-          {growth.outlook}
-        </div>
+        {tab === 'overview' && (
+          <div className="tab-body">
+            <div className="grade-row">
+              {overview.axes.map((a) => (
+                <div className="grade-cell" key={a.key}>
+                  <GradeBadge score={a.score} label={a.label} />
+                </div>
+              ))}
+            </div>
 
-        {(company.revenueHistory?.length || company.employeeHistory?.length) && (
-          <div className="history-row">
-            {company.revenueHistory && company.revenueHistory.filter((p) => p.year > 0).length >= 2 && (
-              <div className="history">
-                <div className="history__label">売上高の推移</div>
-                <Sparkline series={company.revenueHistory} color="var(--excellent)" />
+            <div className="verdict verdict--lead">{overview.verdict}</div>
+
+            {overview.pros.length > 0 && (
+              <>
+                <div className="section-title" style={{ color: 'var(--excellent)' }}>◎ 強み</div>
+                <ul className="good-list">
+                  {overview.pros.map((p, i) => (
+                    <li key={i}>{p}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {overview.cons.length > 0 && (
+              <>
+                <div className="section-title" style={{ color: 'var(--caution)' }}>△ 気になる点</div>
+                <ul className="warn-list">
+                  {overview.cons.map((c, i) => (
+                    <li key={i}>{c}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {!evaluation && (
+              <div className="notice">
+                🛡 労働環境（残業・離職率・有給など）と働きやすさは、公的な労働データ（厚労省しょくばらぼ /
+                gBizINFO 等）の連携でこの企業にも表示されます。今すぐ体験するにはヘッダーの「デモ」データへ。
               </div>
             )}
-            {company.employeeHistory && company.employeeHistory.filter((p) => p.year > 0).length >= 2 && (
-              <div className="history">
-                <div className="history__label">従業員数の推移</div>
-                <Sparkline series={company.employeeHistory} color="var(--standard)" />
-              </div>
-            )}
+
+            <SourceLine company={company} />
           </div>
         )}
 
-        {growth.strengths.length > 0 && (
-          <>
-            <div className="section-title" style={{ color: 'var(--excellent)' }}>◎ 成長の強み</div>
-            <ul className="good-list">
-              {growth.strengths.map((s, i) => (
-                <li key={i}>{s}</li>
-              ))}
-            </ul>
-          </>
-        )}
-        {growth.risks.length > 0 && (
-          <>
-            <div className="section-title" style={{ color: 'var(--caution)' }}>△ 将来のリスク</div>
-            <ul className="warn-list">
-              {growth.risks.map((r, i) => (
-                <li key={i}>{r}</li>
-              ))}
-            </ul>
-          </>
-        )}
-
-        <div className="section-title">将来性スコアの根拠</div>
-        <FactorBars
-          factors={growth.factors.map((f) => ({
-            key: f.key,
-            label: f.label,
-            valueLabel: f.valueLabel,
-            value: f.potential,
-            weight: f.weight,
-            available: f.available,
-          }))}
-          note="※ 数値は各要因のポテンシャル（0〜100、高いほど有望）。データ未取得の要因は重みを再配分しています。"
-        />
-
-        {/* ===== 生産性 ===== */}
-        {showProductivity && (
-          <>
-            <div className="section-title">📈 生産性</div>
+        {tab === 'growth' && (
+          <div className="tab-body">
             <div className="score-wrap">
-              <Donut value={productivity.score!} color={growthColor(productivity.score!)} caption="生産性" size={76} />
-              <div style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.7 }}>{productivity.note}</div>
+              <GrowthDonut growth={growth} size={76} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <GrowthBadge growth={growth} />
+                <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
+                  将来性スコア <b style={{ color: 'var(--text)' }}>{growth.growthScore}</b> / 100
+                </span>
+              </div>
             </div>
-            <div className="kv-grid" style={{ marginTop: 12 }}>
-              <Kv label="一人当たり売上高" val={formatYen(productivity.revenuePerEmployee)} />
-              <Kv label="一人当たり営業利益" val={formatYen(productivity.profitPerEmployee)} />
-              <Kv label="営業利益率" val={productivity.operatingMargin !== null ? `${productivity.operatingMargin.toFixed(1)} %` : '—'} />
-            </div>
-          </>
+            <div className="verdict" style={{ marginTop: 14 }}>{growth.outlook}</div>
+
+            {(company.revenueHistory?.length || company.employeeHistory?.length) && (
+              <div className="history-row">
+                {company.revenueHistory && company.revenueHistory.filter((p) => p.year > 0).length >= 2 && (
+                  <div className="history">
+                    <div className="history__label">売上高の推移</div>
+                    <Sparkline series={company.revenueHistory} color="var(--excellent)" />
+                  </div>
+                )}
+                {company.employeeHistory && company.employeeHistory.filter((p) => p.year > 0).length >= 2 && (
+                  <div className="history">
+                    <div className="history__label">従業員数の推移</div>
+                    <Sparkline series={company.employeeHistory} color="var(--standard)" />
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className="section-title">将来性スコアの根拠</div>
+            <FactorBars
+              factors={growth.factors.map((f) => ({
+                key: f.key,
+                label: f.label,
+                valueLabel: f.valueLabel,
+                value: f.potential,
+                weight: f.weight,
+                available: f.available,
+              }))}
+              note="※ 各要因のポテンシャル（0〜100、高いほど有望）。データ未取得の要因は重みを再配分。"
+            />
+          </div>
         )}
 
-        {/* ===== 株・投資（財務スナップショット）===== */}
-        {showStock && (
-          <>
-            <div className="section-title">💹 株・投資（財務スナップショット）</div>
-            <div className="verdict" style={{ marginBottom: 12 }}>{stock.note}</div>
-            <div className="kv-grid">
-              <Kv label="売上高" val={formatYen(stock.revenue)} />
-              <Kv label="純利益" val={formatYen(stock.netProfit)} />
-              <Kv label="営業利益" val={formatYen(stock.operatingIncome)} />
-              <Kv label="純利益率" val={stock.netMargin !== null ? `${stock.netMargin.toFixed(1)} %` : '—'} />
-              <Kv label="時価総額" val={formatYen(stock.marketCap)} />
-              <Kv label="売上成長率(年率)" val={stock.revenueCagr !== null ? `${stock.revenueCagr.toFixed(1)} %` : '—'} />
-              <Kv label="上場市場" val={stock.exchange ?? (stock.listed ? '上場' : '非上場')} />
-              {stock.ticker && <Kv label="ティッカー" val={stock.ticker} />}
-            </div>
-            <p style={{ fontSize: 11.5, color: 'var(--text-faint)', marginTop: 10 }}>
-              ※ 財務データは Wikidata から取得できた範囲です。投資判断のための助言ではありません。
-              時価総額・PER・配当等の詳細は EDINET / J-Quants 等の連携で補完できます。
-            </p>
-          </>
+        {tab === 'money' && (
+          <div className="tab-body">
+            {productivity.score !== null && (
+              <>
+                <div className="section-title">📈 生産性</div>
+                <div className="score-wrap">
+                  <Donut value={productivity.score} color={growthColor(productivity.score)} caption="生産性" size={76} />
+                  <div style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.7 }}>{productivity.note}</div>
+                </div>
+                <div className="kv-grid" style={{ marginTop: 12 }}>
+                  <Kv label="一人当たり売上高" val={formatYen(productivity.revenuePerEmployee)} />
+                  <Kv label="一人当たり営業利益" val={formatYen(productivity.profitPerEmployee)} />
+                  <Kv label="営業利益率" val={productivity.operatingMargin !== null ? `${productivity.operatingMargin.toFixed(1)} %` : '—'} />
+                </div>
+              </>
+            )}
+            {stock.hasData && (
+              <>
+                <div className="section-title">💹 株・投資（財務スナップショット）</div>
+                <div className="verdict" style={{ marginBottom: 12 }}>{stock.note}</div>
+                <div className="kv-grid">
+                  <Kv label="売上高" val={formatYen(stock.revenue)} />
+                  <Kv label="純利益" val={formatYen(stock.netProfit)} />
+                  <Kv label="営業利益" val={formatYen(stock.operatingIncome)} />
+                  <Kv label="純利益率" val={stock.netMargin !== null ? `${stock.netMargin.toFixed(1)} %` : '—'} />
+                  <Kv label="時価総額" val={formatYen(stock.marketCap)} />
+                  <Kv label="売上成長率(年率)" val={stock.revenueCagr !== null ? `${stock.revenueCagr.toFixed(1)} %` : '—'} />
+                  <Kv label="上場市場" val={stock.exchange ?? (stock.listed ? '上場' : '非上場')} />
+                  {stock.ticker && <Kv label="ティッカー" val={stock.ticker} />}
+                </div>
+                <p style={{ fontSize: 11.5, color: 'var(--text-faint)', marginTop: 10 }}>
+                  ※ 財務データは取得できた範囲。投資助言ではありません。詳細は EDINET / J-Quants 連携で補完。
+                </p>
+              </>
+            )}
+          </div>
         )}
 
-        {/* ===== 働きやすさ & 労働環境 ===== */}
-        {evaluation && m && workability ? (
-          <>
-            <div className="section-title">🌱 働きやすさ</div>
+        {tab === 'work' && workability && (
+          <div className="tab-body">
             <div className="score-wrap">
               <Donut value={workability.score} color={growthColor(workability.score)} caption="働きやすさ" size={76} />
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span className={`badge ${workability.tier === 'high' ? 'lv-excellent' : workability.tier === 'mid' ? 'lv-caution' : 'lv-danger'}`}>
+                <span
+                  className={`badge ${workability.tier === 'high' ? 'lv-excellent' : workability.tier === 'mid' ? 'lv-caution' : 'lv-danger'}`}
+                >
                   <span className="badge__dot" />
                   {workability.tierLabel}
                 </span>
-                {workability.highlights.slice(0, 2).map((h, i) => (
+                {workability.highlights.slice(0, 3).map((h, i) => (
                   <span key={i} style={{ fontSize: 12, color: 'var(--text-dim)' }}>・{h}</span>
                 ))}
               </div>
@@ -194,10 +228,13 @@ export function CompanyDetail({
                 weight: f.weight,
                 available: true,
               }))}
-              note="※ 数値は各観点の働きやすさ（0〜100、高いほど良い）。"
+              note="※ 各観点の働きやすさ（0〜100、高いほど良い）。"
             />
+          </div>
+        )}
 
-            <div className="section-title">🛡 労働環境（ブラック度分析）</div>
+        {tab === 'risk' && evaluation && m && (
+          <div className="tab-body">
             <div className="score-wrap">
               <ScoreDonut evaluation={evaluation} size={76} />
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -248,26 +285,6 @@ export function CompanyDetail({
               <Kv label="社会保険" val={m.socialInsurance ? '完備' : '未整備'} />
               <Kv label="労基署 是正勧告" val={`${m.laborViolationCount} 件`} />
             </div>
-          </>
-        ) : (
-          <div className="notice">
-            🛡 労働環境（残業・離職率・有給消化など）と働きやすさの実データは未連携です。実名企業に推測値を
-            付与すると誤解を招くため、公的な労働データ（厚労省しょくばらぼ / gBizINFO 等）の連携時のみ
-            算出します。労働環境評価を体験するにはヘッダーの「デモ」データをお試しください。
-          </div>
-        )}
-
-        {company.source && (
-          <div className="source-line">
-            出典: <b>{company.source.name}</b>（{company.source.license}）
-            {' ・ '}
-            <a href={company.source.url} target="_blank" rel="noreferrer">データ元</a>
-            {company.website && (
-              <>
-                {' ・ '}
-                <a href={company.website} target="_blank" rel="noreferrer">公式サイト</a>
-              </>
-            )}
           </div>
         )}
       </div>
@@ -275,11 +292,19 @@ export function CompanyDetail({
   )
 }
 
-function SummaryTile({ value, color, label }: { value: number; color: string; label: string }) {
+function SourceLine({ company }: { company: Company }) {
+  if (!company.source) return null
   return (
-    <div className="summary-tile">
-      <div className="summary-tile__val" style={{ color }}>{value}</div>
-      <div className="summary-tile__label">{label}</div>
+    <div className="source-line">
+      出典: <b>{company.source.name}</b>（{company.source.license}）
+      {' ・ '}
+      <a href={company.source.url} target="_blank" rel="noreferrer">データ元</a>
+      {company.website && (
+        <>
+          {' ・ '}
+          <a href={company.website} target="_blank" rel="noreferrer">公式サイト</a>
+        </>
+      )}
     </div>
   )
 }

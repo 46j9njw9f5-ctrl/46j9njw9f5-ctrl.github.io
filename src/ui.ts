@@ -44,6 +44,36 @@ export function potentialColor(p: number): string {
   return growthColor(p)
 }
 
+// ---------- グレード（一目でわかる評価） ----------
+
+export type Grade = 'S' | 'A' | 'B' | 'C' | 'D'
+
+/** スコア(0-100, 高いほど良い)→ グレード。 */
+export function grade(score: number): Grade {
+  if (score >= 88) return 'S'
+  if (score >= 74) return 'A'
+  if (score >= 60) return 'B'
+  if (score >= 45) return 'C'
+  return 'D'
+}
+
+export const gradeColor: Record<Grade, string> = {
+  S: 'var(--excellent)',
+  A: 'var(--excellent)',
+  B: 'var(--standard)',
+  C: 'var(--caution)',
+  D: 'var(--danger)',
+}
+
+/** グレードの意味（凡例・補足用）。 */
+export const gradeLabel: Record<Grade, string> = {
+  S: '非常に良い',
+  A: '良い',
+  B: '標準以上',
+  C: '標準',
+  D: '要注意',
+}
+
 /** 円を兆/億/万で読みやすく整形。 */
 export function formatYen(v: number | null | undefined): string {
   if (v === null || v === undefined) return '—'

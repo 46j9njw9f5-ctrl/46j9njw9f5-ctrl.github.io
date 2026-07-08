@@ -1,5 +1,36 @@
 import type { Company, Evaluation, GrowthEvaluation, SeriesPoint } from '../types'
-import { growthColor, levelClass, levelColor, stageClass } from '../ui'
+import { grade, gradeColor, growthColor, levelClass, levelColor, stageClass } from '../ui'
+
+/** 一目でわかる評価グレード（S/A/B/C/D）のバッジ。score は高いほど良い向き。 */
+export function GradeBadge({
+  score,
+  label,
+  size = 'md',
+}: {
+  score: number
+  label: string
+  size?: 'sm' | 'md'
+}) {
+  const g = grade(score)
+  const color = gradeColor[g]
+  return (
+    <div className={`grade grade--${size}`}>
+      <div
+        className="grade__letter"
+        style={{ color, borderColor: `color-mix(in srgb, ${color} 55%, transparent)`, background: `color-mix(in srgb, ${color} 14%, transparent)` }}
+      >
+        {g}
+      </div>
+      <div className="grade__meta">
+        <div className="grade__label">{label}</div>
+        <div className="grade__score" style={{ color }}>
+          {score}
+          <span style={{ color: 'var(--text-faint)', fontWeight: 400 }}>/100</span>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 /** 企業ロゴの代替アバター（頭文字）。 */
 export function Avatar({ company, size }: { company: Company; size?: number }) {
