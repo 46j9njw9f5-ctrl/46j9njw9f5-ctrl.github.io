@@ -48,7 +48,8 @@
       "avgOvertimeHours": 20.3,
       "womenManagerRate": 3.9,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 88.4
     }
   },
   {
@@ -208,7 +209,8 @@
       "avgOvertimeHours": 21.8,
       "womenManagerRate": 3.4,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 97.8
     }
   },
   {
@@ -256,7 +258,8 @@
       "avgOvertimeHours": 9.1,
       "womenManagerRate": 11.5,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 72.3
     }
   },
   {
@@ -331,7 +334,8 @@
       "avgOvertimeHours": 20.3,
       "womenManagerRate": 11.5,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 94
     }
   },
   {
@@ -659,7 +663,8 @@
     "laborReal": {
       "womenManagerRate": 5.9,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 77.5
     }
   },
   {
@@ -732,7 +737,8 @@
       "avgOvertimeHours": 4.9,
       "womenManagerRate": 10.9,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 85.6
     }
   },
   {
@@ -779,7 +785,8 @@
       "avgOvertimeHours": 10.7,
       "womenManagerRate": 9,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 69.1
     }
   },
   {
@@ -879,7 +886,8 @@
       "avgOvertimeHours": 18,
       "womenManagerRate": 9.3,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 95.8
     }
   },
   {
@@ -920,7 +928,8 @@
       "avgOvertimeHours": 16.7,
       "womenManagerRate": 19.7,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 80.2
     }
   },
   {
@@ -1174,7 +1183,8 @@
       "avgOvertimeHours": 17.2,
       "womenManagerRate": 5.9,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 92.8
     }
   },
   {
@@ -1253,7 +1263,8 @@
     "laborReal": {
       "womenManagerRate": 4.4,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 65.2
     }
   },
   {
@@ -1290,7 +1301,8 @@
       "avgOvertimeHours": 21.9,
       "womenManagerRate": 6,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 84.2
     }
   },
   {
@@ -1323,7 +1335,8 @@
       "avgOvertimeHours": 21.3,
       "womenManagerRate": 30,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 86.9
     }
   },
   {
@@ -1365,7 +1378,8 @@
       "avgOvertimeHours": 21.9,
       "womenManagerRate": 2.6,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 82.3
     }
   },
   {
@@ -1401,7 +1415,8 @@
       "avgOvertimeHours": 9.2,
       "womenManagerRate": 4.9,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 83.5
     }
   },
   {
@@ -1472,7 +1487,8 @@
     "laborReal": {
       "womenManagerRate": 4.8,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 69.6
     }
   },
   {
@@ -1548,7 +1564,8 @@
       "avgOvertimeHours": 20.1,
       "womenManagerRate": 4.8,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 93.1
     }
   },
   {
@@ -1621,7 +1638,8 @@
       "avgOvertimeHours": 23.9,
       "womenManagerRate": 3.3,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 92.7
     }
   },
   {
@@ -1725,7 +1743,8 @@
       "avgOvertimeHours": 12.6,
       "womenManagerRate": 16.1,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 73.7
     }
   },
   {
@@ -1877,7 +1896,8 @@
       "avgOvertimeHours": 24,
       "womenManagerRate": 1.1,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 84.9
     }
   },
   {
@@ -2023,7 +2043,8 @@
       "avgOvertimeHours": 18.6,
       "womenManagerRate": 3.7,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 82.5
     }
   },
   {
@@ -2061,7 +2082,8 @@
       "avgOvertimeHours": 10.3,
       "womenManagerRate": 10.4,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 73.3
     }
   },
   {
@@ -2104,7 +2126,8 @@
     "laborReal": {
       "womenManagerRate": 5.8,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 85.8
     }
   },
   {
@@ -2208,7 +2231,8 @@
       "avgOvertimeHours": 6.7,
       "womenManagerRate": 11.3,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 56.2
     }
   },
   {
@@ -2352,7 +2376,8 @@
       "avgOvertimeHours": 20,
       "womenManagerRate": 7.8,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 86.3
     }
   },
   {
@@ -2388,7 +2413,8 @@
       "avgOvertimeHours": 15.1,
       "womenManagerRate": 6.3,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 84.7
     }
   },
   {
@@ -2425,7 +2451,8 @@
       "avgOvertimeHours": 49.2,
       "womenManagerRate": 4.6,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 50.6
     }
   },
   {
@@ -2527,7 +2554,8 @@
     "laborReal": {
       "womenManagerRate": 0,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 48.7
     }
   },
   {
@@ -2595,6 +2623,10 @@
       "name": "Wikidata",
       "license": "CC0",
       "url": "https://www.wikidata.org/wiki/Q122741"
+    },
+    "laborReal": {
+      "source": "しょくばらぼ（厚労省）",
+      "asOf": ""
     }
   },
   {
@@ -2628,7 +2660,8 @@
       "avgOvertimeHours": 16.7,
       "womenManagerRate": 8.5,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 76.8
     }
   },
   {
@@ -2675,7 +2708,8 @@
       "avgOvertimeHours": 15,
       "womenManagerRate": 17.3,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 82.8
     }
   },
   {
@@ -2786,7 +2820,8 @@
     "laborReal": {
       "womenManagerRate": 1.7,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 64.2
     }
   },
   {
@@ -2859,7 +2894,8 @@
       "avgOvertimeHours": 26.8,
       "womenManagerRate": 10,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 86.5
     }
   },
   {
@@ -2922,7 +2958,8 @@
       "avgOvertimeHours": 18.7,
       "womenManagerRate": 27.8,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 59.3
     }
   },
   {
@@ -2990,7 +3027,8 @@
       "avgOvertimeHours": 17.8,
       "womenManagerRate": 8.7,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 64
     }
   },
   {
@@ -3087,7 +3125,8 @@
       "avgOvertimeHours": 11.6,
       "womenManagerRate": 6.4,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 83.5
     }
   },
   {
@@ -3148,7 +3187,8 @@
       "avgOvertimeHours": 13.4,
       "womenManagerRate": 33.8,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 76.1
     }
   },
   {
@@ -3180,7 +3220,8 @@
     "laborReal": {
       "womenManagerRate": 34.3,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 69.1
     }
   },
   {
@@ -3215,7 +3256,8 @@
       "avgOvertimeHours": 12.2,
       "womenManagerRate": 23,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 60.4
     }
   },
   {
@@ -3280,6 +3322,11 @@
       "name": "Wikidata",
       "license": "CC0",
       "url": "https://www.wikidata.org/wiki/Q105199985"
+    },
+    "laborReal": {
+      "source": "しょくばらぼ（厚労省）",
+      "asOf": "",
+      "paidLeaveRate": 83.3
     }
   },
   {
@@ -3310,6 +3357,10 @@
       "name": "Wikidata",
       "license": "CC0",
       "url": "https://www.wikidata.org/wiki/Q1027454"
+    },
+    "laborReal": {
+      "source": "しょくばらぼ（厚労省）",
+      "asOf": ""
     }
   },
   {
@@ -3345,7 +3396,8 @@
       "avgOvertimeHours": 23,
       "womenManagerRate": 4.4,
       "source": "厚労省 女性活躍・両立支援DB",
-      "asOf": "2026-07-09"
+      "asOf": "2026-07-09",
+      "paidLeaveRate": 56.2
     }
   },
   {

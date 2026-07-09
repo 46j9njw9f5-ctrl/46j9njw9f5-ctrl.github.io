@@ -1,6 +1,32 @@
 import type { Company } from '../types'
 import { companies as seed } from './companies'
 import generated from './companies.generated.json'
+import analyticsData from './analytics.generated.json'
+
+/** しょくばらぼ由来の業種別・都道府県別の実データ集計。 */
+export interface IndustryStat {
+  key: string
+  count: number
+  avgOvertime: number | null
+  avgPaidLeave: number | null
+  avgWomenManager: number | null
+  avgAge: number | null
+}
+export interface NationalAnalytics {
+  source: string
+  total: number
+  national: {
+    avgOvertime: number | null
+    avgPaidLeave: number | null
+    avgWomenManager: number | null
+    avgAge: number | null
+    counts: { overtime: number; paidLeave: number; women: number; age: number }
+  }
+  byIndustry: IndustryStat[]
+  byPrefecture: IndustryStat[]
+  overtimeHistogram: { bucket: string; count: number }[]
+}
+export const analytics = analyticsData as NationalAnalytics
 
 // 実データ（Wikidata・CC0）。事実データ中心で労働指標は未連携。
 export const realCompanies = generated as unknown as Company[]

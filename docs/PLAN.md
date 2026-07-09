@@ -120,6 +120,13 @@ Wikidata には残業・離職率などの労働指標が無い。**実名企業
 `.env.example` を用意（しょくばらぼCSVは無認証、gBizINFO / EDINET は無料トークン）。
 未設定なら安全に no-op。詳細は [`src/data/sources/README.md`](../src/data/sources/README.md)。
 
+## 8b. データ分析ダッシュボード
+
+`scripts/enrich-shokuba.mjs` がしょくばらぼ全データ（約15万社・Shift-JIS・634列）を
+ストリーム解析して `analytics.generated.json`（業種別・都道府県別平均、残業分布）を生成。
+アプリの「データ分析」ビュー（`src/components/Dashboard.tsx` + `charts.tsx`）で
+全国の実データと掲載企業群を可視化する（棒・ヒストグラム・散布図・ランキング）。
+
 ## 9. 見やすさ（人間中心のUI）
 
 - グレード表示（S/A/B/C/D）で一目で評価がわかる。すべて「高い＝良い」向きに統一。

@@ -18,6 +18,7 @@ import {
 import { CompanyCard } from './components/CompanyCard'
 import { CompanyDetail } from './components/CompanyDetail'
 import { ComparePanel } from './components/ComparePanel'
+import { Dashboard } from './components/Dashboard'
 
 export interface Row {
   company: Company
@@ -109,6 +110,7 @@ export default function App() {
   const [compare, setCompare] = useState<string[]>([])
   const [detailId, setDetailId] = useState<string | null>(null)
   const [showCompare, setShowCompare] = useState(false)
+  const [view, setView] = useState<'list' | 'analytics'>('list')
 
   const dataset = datasets.find((d) => d.key === datasetKey)!
   const rows = evaluatedByDataset[datasetKey]
@@ -229,6 +231,19 @@ export default function App() {
       </div>
       <div className="dataset-desc">{dataset.description}</div>
 
+      <div className="viewnav">
+        <button className={`viewnav__btn ${view === 'list' ? 'viewnav__btn--active' : ''}`} onClick={() => setView('list')}>
+          🏢 企業を見る
+        </button>
+        <button className={`viewnav__btn ${view === 'analytics' ? 'viewnav__btn--active' : ''}`} onClick={() => setView('analytics')}>
+          📊 データ分析
+        </button>
+      </div>
+
+      {view === 'analytics' && <Dashboard rows={rows} datasetLabel={dataset.label} />}
+
+      {view === 'list' && (
+      <>
       <details className="legend">
         <summary>スコアの見方（グレード S〜D）</summary>
         <div className="legend__body">
@@ -392,6 +407,8 @@ export default function App() {
             {compareRows.length}社を比較
           </button>
         </div>
+      )}
+      </>
       )}
     </div>
   )

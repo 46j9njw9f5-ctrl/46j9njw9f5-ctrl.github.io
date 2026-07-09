@@ -186,6 +186,251 @@ a {
   max-width: 900px;
 }
 
+/* view nav */
+.viewnav {
+  display: inline-flex;
+  gap: 4px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  margin: 6px 0 14px;
+}
+.viewnav__btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  padding: 9px 18px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.viewnav__btn--active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* dashboard */
+.dash__section {
+  margin-bottom: 34px;
+}
+.dash__h {
+  font-size: 19px;
+  margin: 8px 0 4px;
+}
+.dash__src {
+  color: var(--text-faint);
+  font-size: 12.5px;
+  margin: 0 0 14px;
+}
+.tile-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.stat-tile {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+}
+.stat-tile__val {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+}
+.stat-tile__unit {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-left: 3px;
+}
+.stat-tile__label {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+.stat-tile__sub {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 3px;
+}
+.dash__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.dash__grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.chart-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin: 0 0 16px;
+}
+.chart-card figcaption,
+.chart-card > figcaption {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+/* HBar */
+.hbar {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.hbar__row {
+  display: grid;
+  grid-template-columns: 128px 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+.hbar__label {
+  font-size: 12px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hbar__track {
+  background: var(--bg-elev-2);
+  border-radius: 999px;
+  height: 14px;
+  overflow: hidden;
+}
+.hbar__fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: opacity 0.15s;
+}
+.hbar__val {
+  font-size: 12.5px;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+.hbar__sub {
+  color: var(--text-faint);
+  font-weight: 400;
+  font-size: 11px;
+}
+
+/* Histogram */
+.histo {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 180px;
+}
+.histo__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.histo__barwrap {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+}
+.histo__bar {
+  width: 78%;
+  border-radius: 5px 5px 0 0;
+  min-height: 2px;
+  transition: opacity 0.15s;
+}
+.histo__tip {
+  position: absolute;
+  top: -18px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--text);
+}
+.histo__label {
+  font-size: 9.5px;
+  color: var(--text-faint);
+  margin-top: 6px;
+  transform: rotate(-30deg);
+  white-space: nowrap;
+}
+
+/* Scatter */
+.scatter__grid {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+.scatter__tick {
+  fill: var(--text-faint);
+  font-size: 10px;
+}
+.scatter__axis {
+  fill: var(--text-dim);
+  font-size: 11px;
+  font-weight: 700;
+}
+.scatter__dot {
+  cursor: pointer;
+  transition: r 0.1s;
+  stroke: var(--bg-elev);
+  stroke-width: 1.5;
+}
+.scatter__tipbox {
+  fill: var(--bg-elev-2);
+  stroke: var(--border);
+}
+.scatter__tiptext {
+  fill: var(--text);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* rank cards */
+.rank-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.rank-card__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+.rank-card__list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.rank-card__list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+.rank-card__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rank-card__val {
+  font-weight: 800;
+}
+
 /* 相性診断 */
 .fit {
   background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 10%, var(--bg-elev)), var(--bg-elev));

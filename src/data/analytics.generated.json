@@ -1,0 +1,590 @@
+{
+  "source": "しょくばらぼ（厚労省 職場情報総合サイト）公開オープンデータ",
+  "total": 148228,
+  "national": {
+    "avgOvertime": 12.6,
+    "avgPaidLeave": 67.2,
+    "avgWomenManager": 20.2,
+    "avgAge": 43.2,
+    "counts": {
+      "overtime": 14158,
+      "paidLeave": 11277,
+      "women": 29129,
+      "age": 2636
+    }
+  },
+  "byIndustry": [
+    {
+      "key": "E:製造業",
+      "count": 25333,
+      "avgOvertime": 14.1,
+      "avgPaidLeave": 71.2,
+      "avgWomenManager": 8.9,
+      "avgAge": 42.6
+    },
+    {
+      "key": "P:医療，福祉",
+      "count": 21704,
+      "avgOvertime": 5.3,
+      "avgPaidLeave": 68.8,
+      "avgWomenManager": 49.5,
+      "avgAge": 43.2
+    },
+    {
+      "key": "D:建設業",
+      "count": 20512,
+      "avgOvertime": 14,
+      "avgPaidLeave": 60.6,
+      "avgWomenManager": 10.2,
+      "avgAge": 46
+    },
+    {
+      "key": "I:卸売業，小売業",
+      "count": 19332,
+      "avgOvertime": 12.8,
+      "avgPaidLeave": 60.9,
+      "avgWomenManager": 16.2,
+      "avgAge": 40.7
+    },
+    {
+      "key": "R:サービス業（他に分類されないもの）",
+      "count": 18844,
+      "avgOvertime": 12.5,
+      "avgPaidLeave": 69.1,
+      "avgWomenManager": 22.2,
+      "avgAge": 40.7
+    },
+    {
+      "key": "G:情報通信業",
+      "count": 7889,
+      "avgOvertime": 12.8,
+      "avgPaidLeave": 72.1,
+      "avgWomenManager": 17.6,
+      "avgAge": 36.5
+    },
+    {
+      "key": "L:学術研究，専門・技術サービス業",
+      "count": 6002,
+      "avgOvertime": 12.7,
+      "avgPaidLeave": 67.7,
+      "avgWomenManager": 22.9,
+      "avgAge": 44.2
+    },
+    {
+      "key": "M:宿泊業，飲食サービス業",
+      "count": 5928,
+      "avgOvertime": 19.4,
+      "avgPaidLeave": 51.9,
+      "avgWomenManager": 19,
+      "avgAge": 36.3
+    },
+    {
+      "key": "N:生活関連サービス業，娯楽業",
+      "count": 5084,
+      "avgOvertime": 10.8,
+      "avgPaidLeave": 63.6,
+      "avgWomenManager": 31,
+      "avgAge": 39.5
+    },
+    {
+      "key": "H:運輸業，郵便業",
+      "count": 5019,
+      "avgOvertime": 24.1,
+      "avgPaidLeave": 62.8,
+      "avgWomenManager": 8.1,
+      "avgAge": 44.5
+    },
+    {
+      "key": "K:不動産業，物品賃貸業",
+      "count": 3706,
+      "avgOvertime": 12,
+      "avgPaidLeave": 71.1,
+      "avgWomenManager": 16.1,
+      "avgAge": 40.4
+    },
+    {
+      "key": "O:教育，学習支援業",
+      "count": 2708,
+      "avgOvertime": 9,
+      "avgPaidLeave": 61.7,
+      "avgWomenManager": 33.7,
+      "avgAge": 38
+    },
+    {
+      "key": "J:金融業，保険業",
+      "count": 1696,
+      "avgOvertime": 11,
+      "avgPaidLeave": 72.3,
+      "avgWomenManager": 18.4,
+      "avgAge": 41.5
+    },
+    {
+      "key": "T:分類不能の産業",
+      "count": 1424,
+      "avgOvertime": 11.8,
+      "avgPaidLeave": 64.9,
+      "avgWomenManager": 19.8,
+      "avgAge": 37.9
+    },
+    {
+      "key": "Q:複合サービス事業",
+      "count": 1058,
+      "avgOvertime": 9.7,
+      "avgPaidLeave": 62.9,
+      "avgWomenManager": 19.1,
+      "avgAge": 39.9
+    },
+    {
+      "key": "A:農業，林業",
+      "count": 876,
+      "avgOvertime": 10.6,
+      "avgPaidLeave": 58.5,
+      "avgWomenManager": 17.4,
+      "avgAge": 41.6
+    },
+    {
+      "key": "F:電気・ガス・熱供給・水道業",
+      "count": 707,
+      "avgOvertime": 12.9,
+      "avgPaidLeave": 68.2,
+      "avgWomenManager": 8.5,
+      "avgAge": 42.4
+    },
+    {
+      "key": "C:鉱業，採石業，砂利採取業",
+      "count": 133,
+      "avgOvertime": 16.2,
+      "avgPaidLeave": 66.3,
+      "avgWomenManager": 5.8,
+      "avgAge": 49.9
+    },
+    {
+      "key": "S:公務（他に分類されるものを除く）",
+      "count": 86,
+      "avgOvertime": 12.3,
+      "avgPaidLeave": 73,
+      "avgWomenManager": 23.3,
+      "avgAge": null
+    },
+    {
+      "key": "B:漁業",
+      "count": 66,
+      "avgOvertime": 25,
+      "avgPaidLeave": null,
+      "avgWomenManager": 9.4,
+      "avgAge": null
+    }
+  ],
+  "byPrefecture": [
+    {
+      "key": "13:東京都",
+      "count": 28055,
+      "avgOvertime": 13.3,
+      "avgPaidLeave": 69.5,
+      "avgWomenManager": 19.9,
+      "avgAge": 37.6
+    },
+    {
+      "key": "27:大阪府",
+      "count": 13461,
+      "avgOvertime": 12.3,
+      "avgPaidLeave": 67.5,
+      "avgWomenManager": 18.5,
+      "avgAge": 41.4
+    },
+    {
+      "key": "23:愛知県",
+      "count": 8993,
+      "avgOvertime": 14.5,
+      "avgPaidLeave": 69.5,
+      "avgWomenManager": 16.6,
+      "avgAge": 41.6
+    },
+    {
+      "key": "40:福岡県",
+      "count": 6365,
+      "avgOvertime": 12.3,
+      "avgPaidLeave": 66.3,
+      "avgWomenManager": 19.9,
+      "avgAge": 43.6
+    },
+    {
+      "key": "28:兵庫県",
+      "count": 5892,
+      "avgOvertime": 12,
+      "avgPaidLeave": 67.7,
+      "avgWomenManager": 22.3,
+      "avgAge": 43.2
+    },
+    {
+      "key": "14:神奈川県",
+      "count": 5764,
+      "avgOvertime": 13.3,
+      "avgPaidLeave": 68.5,
+      "avgWomenManager": 19.1,
+      "avgAge": 41.4
+    },
+    {
+      "key": "01:北海道",
+      "count": 4477,
+      "avgOvertime": 13.4,
+      "avgPaidLeave": 62.9,
+      "avgWomenManager": 17.2,
+      "avgAge": 45.4
+    },
+    {
+      "key": "22:静岡県",
+      "count": 4411,
+      "avgOvertime": 13,
+      "avgPaidLeave": 69,
+      "avgWomenManager": 18.1,
+      "avgAge": 44.3
+    },
+    {
+      "key": "11:埼玉県",
+      "count": 3908,
+      "avgOvertime": 12.6,
+      "avgPaidLeave": 67.5,
+      "avgWomenManager": 19.1,
+      "avgAge": 42.1
+    },
+    {
+      "key": "12:千葉県",
+      "count": 3768,
+      "avgOvertime": 12.3,
+      "avgPaidLeave": 68.4,
+      "avgWomenManager": 23.5,
+      "avgAge": 42.2
+    },
+    {
+      "key": "34:広島県",
+      "count": 3580,
+      "avgOvertime": 13.8,
+      "avgPaidLeave": 66.7,
+      "avgWomenManager": 18.7,
+      "avgAge": 43.3
+    },
+    {
+      "key": "26:京都府",
+      "count": 3278,
+      "avgOvertime": 12.4,
+      "avgPaidLeave": 66.9,
+      "avgWomenManager": 20.1,
+      "avgAge": 43.6
+    },
+    {
+      "key": "33:岡山県",
+      "count": 3152,
+      "avgOvertime": 12.9,
+      "avgPaidLeave": 49.4,
+      "avgWomenManager": 18.8,
+      "avgAge": 44.5
+    },
+    {
+      "key": "15:新潟県",
+      "count": 2759,
+      "avgOvertime": 10.2,
+      "avgPaidLeave": 64.8,
+      "avgWomenManager": 19.2,
+      "avgAge": 43.6
+    },
+    {
+      "key": "21:岐阜県",
+      "count": 2379,
+      "avgOvertime": 11.8,
+      "avgPaidLeave": 67.2,
+      "avgWomenManager": 20.4,
+      "avgAge": 45.1
+    },
+    {
+      "key": "04:宮城県",
+      "count": 2377,
+      "avgOvertime": 12.8,
+      "avgPaidLeave": 64.4,
+      "avgWomenManager": 19.7,
+      "avgAge": 43.4
+    },
+    {
+      "key": "46:鹿児島県",
+      "count": 2289,
+      "avgOvertime": 8.9,
+      "avgPaidLeave": 67.3,
+      "avgWomenManager": 24.4,
+      "avgAge": 45.2
+    },
+    {
+      "key": "20:長野県",
+      "count": 2184,
+      "avgOvertime": 13.7,
+      "avgPaidLeave": 65.2,
+      "avgWomenManager": 15.4,
+      "avgAge": 43.9
+    },
+    {
+      "key": "17:石川県",
+      "count": 2173,
+      "avgOvertime": 12.1,
+      "avgPaidLeave": 62.4,
+      "avgWomenManager": 21.4,
+      "avgAge": 41.9
+    },
+    {
+      "key": "08:茨城県",
+      "count": 2124,
+      "avgOvertime": 11.4,
+      "avgPaidLeave": 66.2,
+      "avgWomenManager": 20.5,
+      "avgAge": 44.1
+    },
+    {
+      "key": "10:群馬県",
+      "count": 2073,
+      "avgOvertime": 13.7,
+      "avgPaidLeave": 64.8,
+      "avgWomenManager": 20.5,
+      "avgAge": 44.4
+    },
+    {
+      "key": "09:栃木県",
+      "count": 2036,
+      "avgOvertime": 11.6,
+      "avgPaidLeave": 68.9,
+      "avgWomenManager": 21.5,
+      "avgAge": 44.2
+    },
+    {
+      "key": "38:愛媛県",
+      "count": 1939,
+      "avgOvertime": 11.9,
+      "avgPaidLeave": 66.8,
+      "avgWomenManager": 24.8,
+      "avgAge": 44.6
+    },
+    {
+      "key": "43:熊本県",
+      "count": 1922,
+      "avgOvertime": 12.1,
+      "avgPaidLeave": 65.9,
+      "avgWomenManager": 26.5,
+      "avgAge": 45.4
+    },
+    {
+      "key": "24:三重県",
+      "count": 1868,
+      "avgOvertime": 12.1,
+      "avgPaidLeave": 65.4,
+      "avgWomenManager": 18.2,
+      "avgAge": 45.8
+    },
+    {
+      "key": "47:沖縄県",
+      "count": 1842,
+      "avgOvertime": 14.1,
+      "avgPaidLeave": 70.1,
+      "avgWomenManager": 21.7,
+      "avgAge": 38.3
+    },
+    {
+      "key": "07:福島県",
+      "count": 1821,
+      "avgOvertime": 9.5,
+      "avgPaidLeave": 69,
+      "avgWomenManager": 23.1,
+      "avgAge": 44.5
+    },
+    {
+      "key": "16:富山県",
+      "count": 1651,
+      "avgOvertime": 10.1,
+      "avgPaidLeave": 63.9,
+      "avgWomenManager": 18.9,
+      "avgAge": 43.3
+    },
+    {
+      "key": "18:福井県",
+      "count": 1605,
+      "avgOvertime": 9.7,
+      "avgPaidLeave": 62.5,
+      "avgWomenManager": 22.8,
+      "avgAge": 44
+    },
+    {
+      "key": "35:山口県",
+      "count": 1543,
+      "avgOvertime": 9.5,
+      "avgPaidLeave": 71.9,
+      "avgWomenManager": 25.4,
+      "avgAge": 42.8
+    },
+    {
+      "key": "25:滋賀県",
+      "count": 1525,
+      "avgOvertime": 12.8,
+      "avgPaidLeave": 67.4,
+      "avgWomenManager": 20.4,
+      "avgAge": 41.9
+    },
+    {
+      "key": "45:宮崎県",
+      "count": 1335,
+      "avgOvertime": 10.7,
+      "avgPaidLeave": 68.8,
+      "avgWomenManager": 25.5,
+      "avgAge": 46.7
+    },
+    {
+      "key": "05:秋田県",
+      "count": 1306,
+      "avgOvertime": 9,
+      "avgPaidLeave": 60.6,
+      "avgWomenManager": 23.9,
+      "avgAge": 45.9
+    },
+    {
+      "key": "03:岩手県",
+      "count": 1299,
+      "avgOvertime": 11,
+      "avgPaidLeave": 64.5,
+      "avgWomenManager": 23,
+      "avgAge": 48
+    },
+    {
+      "key": "37:香川県",
+      "count": 1288,
+      "avgOvertime": 12.7,
+      "avgPaidLeave": 67.2,
+      "avgWomenManager": 20.8,
+      "avgAge": 43.8
+    },
+    {
+      "key": "06:山形県",
+      "count": 1268,
+      "avgOvertime": 11.5,
+      "avgPaidLeave": 62.1,
+      "avgWomenManager": 18.6,
+      "avgAge": 43
+    },
+    {
+      "key": "44:大分県",
+      "count": 1242,
+      "avgOvertime": 9.5,
+      "avgPaidLeave": 65.1,
+      "avgWomenManager": 21,
+      "avgAge": 43.1
+    },
+    {
+      "key": "42:長崎県",
+      "count": 1174,
+      "avgOvertime": 11.9,
+      "avgPaidLeave": 59.7,
+      "avgWomenManager": 25.6,
+      "avgAge": 44
+    },
+    {
+      "key": "29:奈良県",
+      "count": 1072,
+      "avgOvertime": 12.6,
+      "avgPaidLeave": 60.4,
+      "avgWomenManager": 27.2,
+      "avgAge": 43
+    },
+    {
+      "key": "32:島根県",
+      "count": 1020,
+      "avgOvertime": 10.2,
+      "avgPaidLeave": 64.4,
+      "avgWomenManager": 22.7,
+      "avgAge": 45.5
+    },
+    {
+      "key": "41:佐賀県",
+      "count": 966,
+      "avgOvertime": 11.1,
+      "avgPaidLeave": 62,
+      "avgWomenManager": 17.7,
+      "avgAge": 46.1
+    },
+    {
+      "key": "30:和歌山県",
+      "count": 941,
+      "avgOvertime": 14.4,
+      "avgPaidLeave": 63.3,
+      "avgWomenManager": 24.6,
+      "avgAge": 43.9
+    },
+    {
+      "key": "02:青森県",
+      "count": 915,
+      "avgOvertime": 9.9,
+      "avgPaidLeave": 63.9,
+      "avgWomenManager": 28,
+      "avgAge": 45.5
+    },
+    {
+      "key": "19:山梨県",
+      "count": 867,
+      "avgOvertime": 13.4,
+      "avgPaidLeave": 70.3,
+      "avgWomenManager": 19.6,
+      "avgAge": 43.4
+    },
+    {
+      "key": "39:高知県",
+      "count": 831,
+      "avgOvertime": 9,
+      "avgPaidLeave": 67.1,
+      "avgWomenManager": 30.9,
+      "avgAge": 45.1
+    },
+    {
+      "key": "31:鳥取県",
+      "count": 753,
+      "avgOvertime": 7.7,
+      "avgPaidLeave": 67.3,
+      "avgWomenManager": 25,
+      "avgAge": 42.9
+    },
+    {
+      "key": "36:徳島県",
+      "count": 737,
+      "avgOvertime": 9.3,
+      "avgPaidLeave": 67.7,
+      "avgWomenManager": 21.1,
+      "avgAge": 47.3
+    }
+  ],
+  "overtimeHistogram": [
+    {
+      "bucket": "0-10h",
+      "count": 6071
+    },
+    {
+      "bucket": "10-20h",
+      "count": 5200
+    },
+    {
+      "bucket": "20-30h",
+      "count": 2286
+    },
+    {
+      "bucket": "30-40h",
+      "count": 409
+    },
+    {
+      "bucket": "40-50h",
+      "count": 142
+    },
+    {
+      "bucket": "50-60h",
+      "count": 20
+    },
+    {
+      "bucket": "60-70h",
+      "count": 17
+    },
+    {
+      "bucket": "70h+",
+      "count": 13
+    }
+  ]
+}
