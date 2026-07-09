@@ -59,6 +59,7 @@ async function main() {
 
   // 集計器
   const ind = new Map() // 業種 -> {count, ot:[sum,n], pl, wm, age}
+  const indVals = new Map() // 業種 -> {ot:[], pl:[], wm:[]} 分位点用に実値を保持
   const pref = new Map()
   const otHist = new Array(8).fill(0) // 0-10,10-20,...,70+
   let total = 0
@@ -92,6 +93,13 @@ async function main() {
         add(nat, 'ot', otV); add(nat, 'pl', plV); add(nat, 'wm', wmV); add(nat, 'age', ageV)
         bump(ind, industry, otV, plV, wmV, ageV)
         bump(pref, prefName, otV, plV, wmV, ageV)
+        if (industry) {
+          if (!indVals.has(industry)) indVals.set(industry, { ot: [], pl: [], wm: [] })
+          const iv = indVals.get(industry)
+          if (otV !== null) iv.ot.push(otV)
+          if (plV !== null) iv.pl.push(plV)
+          if (wmV !== null) iv.wm.push(wmV)
+        }
         if (otV !== null) otHist[Math.min(7, Math.floor(otV / 10))]++
 
         // 自社への補完
@@ -124,10 +132,32 @@ async function main() {
   })
 
   const mean = (t) => (t[1] ? Math.round((t[0] / t[1]) * 10) / 10 : null)
-  const toRows = (map, minCount) =>
+  // 分位点（0,10,…,100%tile の11値）。サンプルが少なければ null。
+  const deciles = (arr) => {
+    if (!arr || arr.length < 30) return null
+    const s = [...arr].sort((a, b) => a - b)
+    const out = []
+    for (let p = 0; p <= 10; p++) {
+      const idx = (p / 10) * (s.length - 1)
+      const lo = Math.floor(idx), hi = Math.ceil(idx)
+      const v = s[lo] + (s[hi] - s[lo]) * (idx - lo)
+      out.push(Math.round(v * 10) / 10)
+    }
+    return out
+  }
+  const toRows = (map, minCount, withDeciles) =>
     [...map.entries()]
       .filter(([k, a]) => k && a.count >= minCount)
-      .map(([k, a]) => ({ key: k, count: a.count, avgOvertime: mean(a.ot), avgPaidLeave: mean(a.pl), avgWomenManager: mean(a.wm), avgAge: mean(a.age) }))
+      .map(([k, a]) => {
+        const row = { key: k, count: a.count, avgOvertime: mean(a.ot), avgPaidLeave: mean(a.pl), avgWomenManager: mean(a.wm), avgAge: mean(a.age) }
+        if (withDeciles && indVals.has(k)) {
+          const iv = indVals.get(k)
+          row.otDeciles = deciles(iv.ot)
+          row.plDeciles = deciles(iv.pl)
+          row.wmDeciles = deciles(iv.wm)
+        }
+        return row
+      })
       .sort((x, y) => y.count - x.count)
 
   const analytics = {
@@ -135,8 +165,8 @@ async function main() {
     total,
     national: { avgOvertime: mean(nat.ot), avgPaidLeave: mean(nat.pl), avgWomenManager: mean(nat.wm), avgAge: mean(nat.age),
       counts: { overtime: nat.ot[1], paidLeave: nat.pl[1], women: nat.wm[1], age: nat.age[1] } },
-    byIndustry: toRows(ind, 50),
-    byPrefecture: toRows(pref, 50),
+    byIndustry: toRows(ind, 50, true),
+    byPrefecture: toRows(pref, 50, false),
     overtimeHistogram: otHist.map((c, i) => ({ bucket: i < 7 ? `${i * 10}-${i * 10 + 10}h` : '70h+', count: c })),
   }
   writeFileSync(OUT, JSON.stringify(analytics, null, 2), 'utf8')

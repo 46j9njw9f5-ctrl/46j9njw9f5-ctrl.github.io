@@ -17,6 +17,21 @@ export const FIT_AXES: FitAxis[] = [
   { key: 'scale', label: '規模の安定', short: '規模' },
 ]
 
+/** 求職者ペルソナ（ワンタップで重視軸をセット）。 */
+export interface Persona {
+  key: string
+  label: string
+  emoji: string
+  priorities: string[]
+}
+
+export const PERSONAS: Persona[] = [
+  { key: 'wlb', label: 'ワークライフ重視', emoji: '🌱', priorities: ['workability', 'safety'] },
+  { key: 'growth', label: '成長・キャリア志向', emoji: '🚀', priorities: ['growth', 'productivity'] },
+  { key: 'stable', label: '安定志向', emoji: '🛡', priorities: ['scale', 'safety'] },
+  { key: 'earn', label: 'しっかり稼ぎたい', emoji: '💰', priorities: ['productivity', 'growth'] },
+]
+
 /** 各軸のスコア（0–100、高いほど良い。データが無ければ null）。 */
 export type AxisScores = Record<string, number | null>
 

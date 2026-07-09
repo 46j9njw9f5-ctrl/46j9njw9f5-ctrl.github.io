@@ -11,6 +11,10 @@ export interface IndustryStat {
   avgPaidLeave: number | null
   avgWomenManager: number | null
   avgAge: number | null
+  /** 分位点（0,10,…,100%tile の11値）。業種内パーセンタイル算出に使う */
+  otDeciles?: number[]
+  plDeciles?: number[]
+  wmDeciles?: number[]
 }
 export interface NationalAnalytics {
   source: string

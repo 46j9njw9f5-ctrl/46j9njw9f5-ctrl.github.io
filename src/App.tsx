@@ -5,7 +5,7 @@ import { evaluateGrowth, scaleToPotential } from './engine/growth'
 import { evaluateProductivity } from './engine/productivity'
 import { evaluateStock } from './engine/stock'
 import { evaluateWorkability } from './engine/workability'
-import { availableAxes, matchScore, type AxisScores } from './engine/fit'
+import { availableAxes, matchScore, PERSONAS, type AxisScores } from './engine/fit'
 import {
   hasLabor,
   type Company,
@@ -150,6 +150,14 @@ export default function App() {
   )
 
   const fitAxes = useMemo(() => availableAxes(rows.map((r) => r.scores)), [rows])
+  const availKeys = new Set(fitAxes.map((a) => a.key))
+  const personas = PERSONAS.filter((p) => p.priorities.some((k) => availKeys.has(k)))
+  const applyPersona = (pri: string[]) => {
+    const f = pri.filter((k) => availKeys.has(k))
+    if (!f.length) return
+    setPriorities(f)
+    setSort('match')
+  }
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -273,6 +281,16 @@ export default function App() {
             </button>
           )}
         </div>
+        {personas.length > 0 && (
+          <div className="fit__personas">
+            <span className="fit__personas-label">かんたん診断:</span>
+            {personas.map((p) => (
+              <button key={p.key} className="chip chip--persona" onClick={() => applyPersona(p.priorities)}>
+                {p.emoji} {p.label}
+              </button>
+            ))}
+          </div>
+        )}
         <div className="chip-row">
           {fitAxes.map((ax) => (
             <button

@@ -257,6 +257,14 @@ export function CompanyDetail({
                         <div className="bench__value">{b.value}{b.unit}</div>
                         <div className="bench__base">
                           {b.baseLabel} {b.industryAvg ?? b.nationalAvg}{b.unit}
+                          {b.betterThanPct !== null && (
+                            <span
+                              className="bench__pct"
+                              style={{ color: b.betterThanPct >= 60 ? 'var(--excellent)' : b.betterThanPct <= 40 ? 'var(--danger)' : 'var(--text-faint)' }}
+                            >
+                              業種内で{b.betterThanPct}%の企業より{b.lowerBetter ? '少ない' : '高い'}
+                            </span>
+                          )}
                         </div>
                         {b.delta !== null && b.better !== null && (
                           <div className="bench__delta" style={{ color: b.better ? 'var(--excellent)' : 'var(--danger)' }}>
