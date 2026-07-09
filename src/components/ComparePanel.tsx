@@ -32,11 +32,13 @@ export function ComparePanel({ rows, onClose }: { rows: Row[]; onClose: () => vo
   return (
     <div className="overlay" onClick={onClose}>
       <div className="modal" style={{ maxWidth: 820 }} onClick={(e) => e.stopPropagation()}>
-        <div className="modal__head">
-          <h2 style={{ margin: 0, fontSize: 20 }}>企業比較</h2>
-          <button className="modal__close" onClick={onClose} aria-label="閉じる">
-            ×
-          </button>
+        <div className="modal__top">
+          <div className="modal__head">
+            <h2 style={{ margin: 0, fontSize: 20 }}>企業比較</h2>
+            <button className="modal__close" onClick={onClose} aria-label="閉じる">
+              ×
+            </button>
+          </div>
         </div>
 
         {(() => {

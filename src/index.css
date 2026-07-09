@@ -1525,23 +1525,78 @@ a {
     font-size: 8.5px;
   }
 
-  /* モーダル */
+  /* モーダル＝全画面ボトムシート（ネイティブ風） */
   .overlay {
-    padding: 22px 10px;
+    padding: 0;
+    align-items: flex-end;
+    overflow: hidden;
   }
   .modal {
-    padding: 20px 15px;
-    border-radius: 16px;
+    width: 100%;
+    max-width: none !important;
+    height: 96dvh;
+    border: none;
+    border-radius: 20px 20px 0 0;
+    padding: 0 16px calc(20px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    animation: sheet-up 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes sheet-up {
+    from {
+      transform: translateY(6%);
+      opacity: 0.6;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  /* ヘッダー＋タブを上部に固定、全幅 */
+  .modal__top {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    margin: 0 -16px;
+    padding: 8px 16px 0;
+    background: var(--bg-elev);
+    border-bottom: 1px solid var(--border);
+  }
+  /* ドラッグハンドル（つまみ） */
+  .modal__top::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--border-strong);
+    margin: 0 auto 10px;
   }
   .modal__head h2 {
     font-size: 20px;
   }
+  .modal__close {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
   .tabs {
     gap: 2px;
+    margin: 12px 0 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: none;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
   }
   .tab {
-    padding: 8px 9px;
+    padding: 9px 10px;
     font-size: 12.5px;
+    white-space: nowrap;
+    flex: 0 0 auto;
   }
   .section-title {
     margin: 18px 0 8px;

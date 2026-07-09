@@ -57,6 +57,7 @@ export function CompanyDetail({
   return (
     <div className="overlay" onClick={onClose}>
       <div className="modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+        <div className="modal__top">
         <div className="modal__head">
           <Avatar company={company} size={52} />
           <div style={{ minWidth: 0 }}>
@@ -84,6 +85,7 @@ export function CompanyDetail({
               {t.label}
             </button>
           ))}
+        </div>
         </div>
 
         {tab === 'overview' && (
