@@ -16,30 +16,33 @@
 :root {
   color-scheme: dark;
 
-  /* クールなインク基調・アクセントはアイリス（青紫） */
-  --bg: #0a0d14;
-  --bg-elev: #12161f;
-  --bg-elev-2: #1a2130;
-  --border: #262f40;
-  --border-strong: #384357;
-  --text: #eef1f7;
-  --text-dim: #aeb9cb;
-  --text-faint: #808da2;
-  --accent: #8b81ff;
-  --accent-ink: #0a0d14;
-  --accent-dim: #322f6b;
+  /* パレットはオープンソースの Open Props（Open Color ランプ）に準拠 */
+  --bg: #0a0c11;
+  --bg-elev: #13161d;
+  --bg-elev-2: #1b1f28;
+  --border: #2a303c;
+  --border-strong: #3a4150;
+  --text: var(--gray-1);
+  --text-dim: #aeb4bd;
+  --text-faint: var(--gray-6);
+  --accent: var(--violet-4);
+  --accent-ink: #0a0c11;
+  --accent-dim: #2b2555;
 
-  --excellent: #31c48d;
-  --standard: #46b6ee;
-  --caution: #f2a935;
-  --danger: #f2645f;
+  --excellent: var(--green-5);
+  --standard: var(--blue-4);
+  --caution: var(--yellow-6);
+  --danger: var(--red-5);
 
-  --grad-1: #221f5540;
-  --grad-2: #10203a40;
+  --grad-1: #2a1f6633;
+  --grad-2: #10233f33;
 
   --radius: 12px;
   --radius-sm: 9px;
-  --shadow: 0 12px 40px rgba(0, 0, 0, 0.44);
+  /* Open Props の多層シャドウ */
+  --shadow-color: 240 32% 3%;
+  --shadow-strength: 20%;
+  --shadow: var(--shadow-4);
 
   --font-display: 'Bricolage Grotesque', system-ui, 'Hiragino Kaku Gothic ProN',
     'Noto Sans JP', sans-serif;
@@ -54,46 +57,50 @@
 @media (prefers-color-scheme: light) {
   :root:not([data-theme='dark']) {
     color-scheme: light;
-    --bg: #f4f6fb;
+    --bg: #f6f7f9;
     --bg-elev: #ffffff;
-    --bg-elev-2: #eef1f8;
-    --border: #e1e5ef;
-    --border-strong: #cbd2e0;
-    --text: #121722;
-    --text-dim: #4b5567;
-    --text-faint: #7a8494;
-    --accent: #5a52e6;
+    --bg-elev-2: #eef0f4;
+    --border: #e3e6eb;
+    --border-strong: var(--gray-4);
+    --text: #1a1d23;
+    --text-dim: var(--gray-7);
+    --text-faint: var(--gray-6);
+    --accent: var(--violet-7);
     --accent-ink: #ffffff;
-    --accent-dim: #dcd9fb;
-    --excellent: #0f9d58;
-    --standard: #1183c6;
-    --caution: #b07d10;
-    --danger: #d83a3a;
-    --grad-1: #e7e6fb99;
-    --grad-2: #e8f0fb99;
-    --shadow: 0 10px 30px rgba(30, 34, 90, 0.1);
+    --accent-dim: var(--violet-1);
+    --excellent: #2f9e44;
+    --standard: var(--blue-7);
+    --caution: #a5750a;
+    --danger: #e03131;
+    --grad-1: #efe9ff88;
+    --grad-2: #e6f0fb88;
+    --shadow-color: 220 22% 34%;
+    --shadow-strength: 3%;
+    --shadow: var(--shadow-4);
   }
 }
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f4f6fb;
+  --bg: #f6f7f9;
   --bg-elev: #ffffff;
-  --bg-elev-2: #eef1f8;
-  --border: #e1e5ef;
-  --border-strong: #cbd2e0;
-  --text: #121722;
-  --text-dim: #4b5567;
-  --text-faint: #7a8494;
-  --accent: #5a52e6;
+  --bg-elev-2: #eef0f4;
+  --border: #e3e6eb;
+  --border-strong: var(--gray-4);
+  --text: #1a1d23;
+  --text-dim: var(--gray-7);
+  --text-faint: var(--gray-6);
+  --accent: var(--violet-7);
   --accent-ink: #ffffff;
-  --accent-dim: #dcd9fb;
-  --excellent: #0f9d58;
-  --standard: #1183c6;
-  --caution: #b07d10;
-  --danger: #d83a3a;
-  --grad-1: #e7e6fb99;
-  --grad-2: #e8f0fb99;
-  --shadow: 0 10px 30px rgba(30, 34, 90, 0.1);
+  --accent-dim: var(--violet-1);
+  --excellent: #2f9e44;
+  --standard: var(--blue-7);
+  --caution: #a5750a;
+  --danger: #e03131;
+  --grad-1: #efe9ff88;
+  --grad-2: #e6f0fb88;
+  --shadow-color: 220 22% 34%;
+  --shadow-strength: 3%;
+  --shadow: var(--shadow-4);
 }
 
 * {
@@ -361,6 +368,7 @@ a {
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 16px;
+  box-shadow: var(--shadow-1);
 }
 .stat-tile__val {
   font-size: 30px;
@@ -778,11 +786,13 @@ a {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  transition: transform 0.15s, border-color 0.15s;
+  box-shadow: var(--shadow-2);
+  transition: transform 0.16s var(--ease-3, ease), border-color 0.16s, box-shadow 0.16s;
 }
 .card:hover {
   transform: translateY(-3px);
   border-color: var(--accent-dim);
+  box-shadow: var(--shadow-4);
 }
 
 .card__top {

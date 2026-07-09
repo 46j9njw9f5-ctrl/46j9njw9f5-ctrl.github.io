@@ -58,7 +58,10 @@
 ## デザイン（見やすさ）
 
 - **視覚アイデンティティ**：見出し・ブランドは **Bricolage Grotesque**、数値・データは **JetBrains Mono**
-  （台帳のような精密感）を同梱（OFL・`public/fonts/`）。アクセントはアイリス（青紫）で汎用感を排除。
+  （台帳のような精密感）を同梱（OFL・`public/fonts/`）。
+- **オープンソースのデザイン基盤**：配色は [Open Props](https://open-props.style/)（MIT）の
+  Open Color ランプ、影は Open Props の多層シャドウを採用。アクセントは violet 系。
+  自作の勘に頼らず、実績あるトークンで統一しています。
 - **ライト／ダーク両テーマ**に対応（右上のトグルで 自動／ライト／ダーク を切替、`prefers-color-scheme` を尊重）。
 - コントラストを引き上げ、数値は `tabular-nums` で桁揃え。意味色（good/warn/bad）はアクセントと分離。
 - クール寄りニュートラルの配色トークンで統一（`src/index.css`）。
