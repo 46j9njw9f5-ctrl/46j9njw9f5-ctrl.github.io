@@ -1,85 +1,99 @@
+/* ============ 書体（同梱・OFL） ============ */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage-grotesque.woff2') format('woff2');
+  font-weight: 400 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
 /* ============ デザイントークン（ダーク＝既定） ============ */
 :root {
   color-scheme: dark;
 
-  --bg: #0d1017;
-  --bg-elev: #161c28;
-  --bg-elev-2: #1e2836;
-  --border: #2b3547;
-  --border-strong: #3b485f;
-  --text: #eef2f8;
-  --text-dim: #b4c0d2; /* コントラスト引き上げ */
-  --text-faint: #8593a8;
-  --accent: #5b8cff;
-  --accent-ink: #ffffff;
-  --accent-dim: #2f4372;
+  /* クールなインク基調・アクセントはアイリス（青紫） */
+  --bg: #0a0d14;
+  --bg-elev: #12161f;
+  --bg-elev-2: #1a2130;
+  --border: #262f40;
+  --border-strong: #384357;
+  --text: #eef1f7;
+  --text-dim: #aeb9cb;
+  --text-faint: #808da2;
+  --accent: #8b81ff;
+  --accent-ink: #0a0d14;
+  --accent-dim: #322f6b;
 
-  --excellent: #37d39a;
-  --standard: #4bbdf4;
-  --caution: #f7b23d;
-  --danger: #f76d6d;
+  --excellent: #31c48d;
+  --standard: #46b6ee;
+  --caution: #f2a935;
+  --danger: #f2645f;
 
-  --grad-1: #18264180;
-  --grad-2: #101a2e80;
+  --grad-1: #221f5540;
+  --grad-2: #10203a40;
 
-  --radius: 14px;
-  --radius-sm: 10px;
-  --shadow: 0 10px 34px rgba(0, 0, 0, 0.38);
+  --radius: 12px;
+  --radius-sm: 9px;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.44);
 
-  /* タイプスケール */
-  --fs-xs: 11.5px;
-  --fs-sm: 12.5px;
-  --fs-base: 14px;
-  --fs-lg: 18px;
-  --fs-xl: 22px;
-  --fs-2xl: 30px;
-
-  font-family: system-ui, -apple-system, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+  --font-display: 'Bricolage Grotesque', system-ui, 'Hiragino Kaku Gothic ProN',
+    'Noto Sans JP', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-body: system-ui, -apple-system, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
     'Noto Sans JP', Meiryo, sans-serif;
+
+  font-family: var(--font-body);
 }
 
 /* ============ ライトテーマ ============ */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme='dark']) {
     color-scheme: light;
-    --bg: #f5f8fc;
+    --bg: #f4f6fb;
     --bg-elev: #ffffff;
-    --bg-elev-2: #eef2f8;
-    --border: #dde4ee;
-    --border-strong: #c6d0de;
-    --text: #131a27;
-    --text-dim: #48566b;
-    --text-faint: #737f94;
-    --accent: #2f6bf0;
-    --accent-dim: #cfe0ff;
+    --bg-elev-2: #eef1f8;
+    --border: #e1e5ef;
+    --border-strong: #cbd2e0;
+    --text: #121722;
+    --text-dim: #4b5567;
+    --text-faint: #7a8494;
+    --accent: #5a52e6;
+    --accent-ink: #ffffff;
+    --accent-dim: #dcd9fb;
     --excellent: #0f9d58;
     --standard: #1183c6;
-    --caution: #b9770c;
+    --caution: #b07d10;
     --danger: #d83a3a;
-    --grad-1: #e5eefc99;
-    --grad-2: #eef3fb99;
-    --shadow: 0 8px 26px rgba(23, 43, 84, 0.1);
+    --grad-1: #e7e6fb99;
+    --grad-2: #e8f0fb99;
+    --shadow: 0 10px 30px rgba(30, 34, 90, 0.1);
   }
 }
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f5f8fc;
+  --bg: #f4f6fb;
   --bg-elev: #ffffff;
-  --bg-elev-2: #eef2f8;
-  --border: #dde4ee;
-  --border-strong: #c6d0de;
-  --text: #131a27;
-  --text-dim: #48566b;
-  --text-faint: #737f94;
-  --accent: #2f6bf0;
-  --accent-dim: #cfe0ff;
+  --bg-elev-2: #eef1f8;
+  --border: #e1e5ef;
+  --border-strong: #cbd2e0;
+  --text: #121722;
+  --text-dim: #4b5567;
+  --text-faint: #7a8494;
+  --accent: #5a52e6;
+  --accent-ink: #ffffff;
+  --accent-dim: #dcd9fb;
   --excellent: #0f9d58;
   --standard: #1183c6;
-  --caution: #b9770c;
+  --caution: #b07d10;
   --danger: #d83a3a;
-  --grad-1: #e5eefc99;
-  --grad-2: #eef3fb99;
-  --shadow: 0 8px 26px rgba(23, 43, 84, 0.1);
+  --grad-1: #e7e6fb99;
+  --grad-2: #e8f0fb99;
+  --shadow: 0 10px 30px rgba(30, 34, 90, 0.1);
 }
 
 * {
@@ -167,18 +181,32 @@ a {
 }
 
 .brand__logo {
-  font-size: 30px;
+  font-family: var(--font-display);
+  font-size: 34px;
   font-weight: 800;
-  letter-spacing: -0.03em;
-  background: linear-gradient(120deg, #6ea8ff, #b98bff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  line-height: 1;
+  position: relative;
+  padding-right: 10px;
+}
+.brand__logo::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .brand__tag {
+  font-family: var(--font-display);
   color: var(--text-dim);
   font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .subhead {
@@ -303,7 +331,7 @@ a {
 }
 .viewnav__btn--active {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-ink);
 }
 
 /* dashboard */
@@ -405,7 +433,7 @@ a {
 }
 .seg__btn--active {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-ink);
 }
 
 /* HBar */
@@ -859,7 +887,7 @@ a {
 .btn--primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--accent-ink);
 }
 .btn--ghost {
   flex: 0 0 auto;
@@ -1538,4 +1566,67 @@ a {
   .grade-row {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* ============ タイポグラフィの役割 ============ */
+/* 見出し・タブ・ブランド系＝ディスプレイ書体（Bricolage Grotesque） */
+.dash__h,
+.modal__head h2,
+.section-title,
+.tab,
+.dataset-tab,
+.viewnav__btn,
+.theme-toggle,
+.card__name,
+.fit__title,
+.chart-card figcaption,
+.rank-card__title,
+.gem__name,
+.brand__logo {
+  font-family: var(--font-display);
+}
+.modal__head h2 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.card__name {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: none; /* 全角には大文字化が効かないので通常に */
+  letter-spacing: 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* 数値＝モノスペース（台帳のような精密感・桁揃え） */
+.stat__val,
+.stat-tile__val,
+.donut__num,
+.grade__letter,
+.grade__score,
+.hbar__val,
+.kv__val,
+.bench__value,
+.factor__risk,
+.rank-card__val,
+.gem__q,
+.summary-tile__val,
+.cmp-table td {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.grade__letter {
+  letter-spacing: 0;
+}
+
+/* エディトリアルな区切り：セクション見出しに細い上罫を足す */
+.dash__section + .dash__section {
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
 }
