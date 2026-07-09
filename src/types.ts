@@ -40,6 +40,10 @@ export interface RealLabor {
   avgTenureYears?: number
   /** 女性管理職比率（%） */
   womenManagerRate?: number
+  /** 従業員の平均年齢 */
+  avgAge?: number
+  /** しょくばらぼの業種（JSIC大分類。業種平均との比較に使う） */
+  industryJsic?: string
   /** 出典 */
   source: string
   /** 取得日 */

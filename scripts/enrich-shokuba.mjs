@@ -103,6 +103,7 @@ async function main() {
           if (lr.paidLeaveRate == null && plV !== null && plV > 0) lr.paidLeaveRate = plV
           if (lr.womenManagerRate == null && wmV !== null) lr.womenManagerRate = wmV
           if (lr.avgAge == null && ageV !== null) lr.avgAge = ageV
+          if (!lr.industryJsic && industry) lr.industryJsic = industry
           if (!c.laborReal) { lr.source = 'しょくばらぼ（厚労省）'; c.laborReal = lr }
           matched++
         }

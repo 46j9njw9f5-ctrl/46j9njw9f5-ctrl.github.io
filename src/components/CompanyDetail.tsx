@@ -8,6 +8,7 @@ import type {
   WorkabilityEvaluation,
 } from '../types'
 import { buildOverview } from '../engine/overview'
+import { buildBenchmark } from '../engine/benchmark'
 import { formatYen, growthColor, potentialColor, riskColor } from '../ui'
 import { Avatar, Donut, GradeBadge, GrowthBadge, GrowthDonut, RiskBadge, ScoreDonut, Sparkline } from './Bits'
 
@@ -244,6 +245,32 @@ export function CompanyDetail({
               }))}
               note="※ 各観点の働きやすさ（0〜100、高いほど良い）。揃っている観点だけで重みを再配分。"
             />
+            {company.laborReal && (() => {
+              const bench = buildBenchmark(company.laborReal)
+              return bench.length ? (
+                <>
+                  <div className="section-title">業種・全国平均との比較</div>
+                  <div className="bench">
+                    {bench.map((b) => (
+                      <div className="bench__row" key={b.key}>
+                        <div className="bench__label">{b.label}</div>
+                        <div className="bench__value">{b.value}{b.unit}</div>
+                        <div className="bench__base">
+                          {b.baseLabel} {b.industryAvg ?? b.nationalAvg}{b.unit}
+                        </div>
+                        {b.delta !== null && b.better !== null && (
+                          <div className="bench__delta" style={{ color: b.better ? 'var(--excellent)' : 'var(--danger)' }}>
+                            {b.delta > 0 ? '+' : ''}{b.delta}{b.unit}
+                            {' '}
+                            {b.better ? '（良い）' : '（悪い）'}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : null
+            })()}
             {company.laborReal && (
               <div className="source-line" style={{ marginTop: 12 }}>
                 労働データ出典: <b>{company.laborReal.source}</b>

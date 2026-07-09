@@ -279,6 +279,35 @@ a {
   color: var(--text-dim);
   margin-bottom: 14px;
 }
+.chart-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.seg {
+  display: inline-flex;
+  gap: 2px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2px;
+}
+.seg__btn {
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+.seg__btn--active {
+  background: var(--accent);
+  color: #fff;
+}
 
 /* HBar */
 .hbar {
@@ -956,6 +985,50 @@ a {
   border-style: solid;
   border-color: color-mix(in srgb, var(--excellent) 30%, transparent);
   background: color-mix(in srgb, var(--excellent) 8%, var(--bg-elev-2));
+}
+
+/* 業種・全国平均との比較 */
+.bench {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bench__row {
+  display: grid;
+  grid-template-columns: 108px auto 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 13px;
+}
+.bench__label {
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+.bench__value {
+  font-size: 16px;
+  font-weight: 800;
+}
+.bench__base {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+.bench__delta {
+  font-size: 12.5px;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .bench__row {
+    grid-template-columns: 1fr auto;
+    row-gap: 3px;
+  }
+  .bench__base {
+    grid-column: 1 / -1;
+  }
 }
 
 .source-line {

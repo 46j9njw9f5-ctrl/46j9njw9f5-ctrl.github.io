@@ -1,8 +1,15 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import type { Row } from '../App'
-import { analytics } from '../data'
+import { analytics, type IndustryStat } from '../data'
 import { growthColor } from '../ui'
 import { HBar, Histogram, Scatter, StatTile, type BarDatum, type DotDatum } from './charts'
+
+type PrefMetric = 'overtime' | 'paidLeave' | 'women'
+const PREF_METRICS: { key: PrefMetric; label: string; unit: string; field: keyof IndustryStat; color: string; desc: boolean }[] = [
+  { key: 'overtime', label: '平均残業（長い順）', unit: 'h', field: 'avgOvertime', color: 'var(--caution)', desc: true },
+  { key: 'paidLeave', label: '有給取得率（高い順）', unit: '%', field: 'avgPaidLeave', color: 'var(--standard)', desc: true },
+  { key: 'women', label: '女性管理職（高い順）', unit: '%', field: 'avgWomenManager', color: 'var(--excellent)', desc: true },
+]
 
 /** データ分析ダッシュボード。全国の実データ集計＋このアプリの企業群の分析。 */
 export function Dashboard({ rows, datasetLabel }: { rows: Row[]; datasetLabel: string }) {
@@ -57,6 +64,14 @@ export function Dashboard({ rows, datasetLabel }: { rows: Row[]; datasetLabel: s
     .map((d) => ({ label: d.key, value: d.avgWomenManager!, sub: `n=${d.count.toLocaleString()}` }))
   const hist: BarDatum[] = n.overtimeHistogram.map((h) => ({ label: h.bucket, value: h.count }))
 
+  const [prefMetric, setPrefMetric] = useState<PrefMetric>('overtime')
+  const pm = PREF_METRICS.find((m) => m.key === prefMetric)!
+  const prefRanking: BarDatum[] = [...n.byPrefecture]
+    .filter((d) => d[pm.field] !== null)
+    .sort((a, b) => ((b[pm.field] as number) ?? 0) - ((a[pm.field] as number) ?? 0))
+    .slice(0, 12)
+    .map((d) => ({ label: d.key, value: d[pm.field] as number, sub: `n=${d.count.toLocaleString()}` }))
+
   return (
     <div className="dash">
       {/* 全国の実データ */}
@@ -85,6 +100,23 @@ export function Dashboard({ rows, datasetLabel }: { rows: Row[]; datasetLabel: s
         <figure className="chart-card">
           <figcaption>業種別 女性管理職比率（高い順・上位12）</figcaption>
           <HBar data={womenRanking} unit="%" color="var(--excellent)" />
+        </figure>
+        <figure className="chart-card">
+          <div className="chart-card__head">
+            <figcaption style={{ marginBottom: 0 }}>都道府県別 {pm.label}（上位12）</figcaption>
+            <div className="seg">
+              {PREF_METRICS.map((m) => (
+                <button
+                  key={m.key}
+                  className={`seg__btn ${prefMetric === m.key ? 'seg__btn--active' : ''}`}
+                  onClick={() => setPrefMetric(m.key)}
+                >
+                  {m.key === 'overtime' ? '残業' : m.key === 'paidLeave' ? '有給' : '女性管理職'}
+                </button>
+              ))}
+            </div>
+          </div>
+          <HBar data={prefRanking} unit={pm.unit} color={pm.color} />
         </figure>
       </section>
 
