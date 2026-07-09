@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { Row } from '../App'
 import { analytics, type IndustryStat } from '../data'
+import { findHiddenGems } from '../engine/gems'
 import { growthColor } from '../ui'
 import { HBar, Histogram, Scatter, StatTile, type BarDatum, type DotDatum } from './charts'
 
@@ -42,9 +43,15 @@ export function Dashboard({ rows, datasetLabel }: { rows: Row[]; datasetLabel: s
         .sort((a, b) => b.v - a.v)
         .slice(0, n)
 
+    const gems = findHiddenGems(
+      rows.map((r) => ({ id: r.company.id, name: r.company.name, employees: r.company.employees, scores: r.scores })),
+      { maxCount: 6 },
+    )
+
     return {
       industryGrowth,
       scatter,
+      gems,
       topGrowth: topBy((r) => r.growth.growthScore),
       topWork: topBy((r) => r.workability?.score),
       topProd: topBy((r) => r.productivity.score),
@@ -140,6 +147,23 @@ export function Dashboard({ rows, datasetLabel }: { rows: Row[]; datasetLabel: s
           {portfolio.topWork.length > 0 && <RankCard title="働きやすさ Top5" items={portfolio.topWork} />}
           {portfolio.topProd.length > 0 && <RankCard title="生産性 Top5" items={portfolio.topProd} />}
         </div>
+
+        {portfolio.gems.length > 0 && (
+          <figure className="chart-card gems-card">
+            <figcaption>💎 隠れ優良企業（規模は控えめでも各軸が高い）</figcaption>
+            <div className="gems">
+              {portfolio.gems.map((g) => (
+                <div className="gem" key={g.id}>
+                  <div className="gem__head">
+                    <span className="gem__name">{g.name}</span>
+                    <span className="gem__q" style={{ color: growthColor(g.quality) }}>{g.quality}</span>
+                  </div>
+                  <div className="gem__reasons">{g.reasons.join(' ・ ')}</div>
+                </div>
+              ))}
+            </div>
+          </figure>
+        )}
       </section>
     </div>
   )

@@ -6,6 +6,7 @@ import { evaluateProductivity } from './engine/productivity'
 import { evaluateStock } from './engine/stock'
 import { evaluateWorkability } from './engine/workability'
 import { availableAxes, matchScore, PERSONAS, type AxisScores } from './engine/fit'
+import { findHiddenGems } from './engine/gems'
 import {
   hasLabor,
   type Company,
@@ -105,6 +106,7 @@ export default function App() {
   const [onlyFavorites, setOnlyFavorites] = useState(false)
   const [promisingOnly, setPromisingOnly] = useState(false)
   const [safeOnly, setSafeOnly] = useState(false)
+  const [gemsOnly, setGemsOnly] = useState(false)
   const [priorities, setPriorities] = useState<string[]>([])
   const [favorites, setFavorites] = useState<string[]>(loadFavorites)
   const [compare, setCompare] = useState<string[]>([])
@@ -128,6 +130,7 @@ export default function App() {
     setShowCompare(false)
     setPriorities([])
     setSort('growth')
+    setGemsOnly(false)
     if (!dataset.hasLabor) setSafeOnly(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [datasetKey])
@@ -150,6 +153,16 @@ export default function App() {
   )
 
   const fitAxes = useMemo(() => availableAxes(rows.map((r) => r.scores)), [rows])
+  const gemIds = useMemo(
+    () =>
+      new Set(
+        findHiddenGems(
+          rows.map((r) => ({ id: r.company.id, name: r.company.name, employees: r.company.employees, scores: r.scores })),
+          { maxCount: 12 },
+        ).map((g) => g.id),
+      ),
+    [rows],
+  )
   const availKeys = new Set(fitAxes.map((a) => a.key))
   const personas = PERSONAS.filter((p) => p.priorities.some((k) => availKeys.has(k)))
   const applyPersona = (pri: string[]) => {
@@ -165,6 +178,7 @@ export default function App() {
       if (industry !== 'すべて' && r.company.industry !== industry) return false
       if (onlyFavorites && !favorites.includes(r.company.id)) return false
       if (promisingOnly && r.growth.growthScore < 60) return false
+      if (gemsOnly && !gemIds.has(r.company.id)) return false
       if (safeOnly && r.evaluation && (r.evaluation.level === 'danger' || r.evaluation.level === 'caution'))
         return false
       if (q) {
@@ -195,7 +209,7 @@ export default function App() {
           return (b.evaluation?.blackScore ?? -1) - (a.evaluation?.blackScore ?? -1)
       }
     })
-  }, [rows, query, industry, sort, onlyFavorites, promisingOnly, safeOnly, favorites, priorities])
+  }, [rows, query, industry, sort, onlyFavorites, promisingOnly, safeOnly, gemsOnly, gemIds, favorites, priorities])
 
   const detail = detailId ? rows.find((r) => r.company.id === detailId) : null
   const compareRows = compare
@@ -339,6 +353,11 @@ export default function App() {
         >
           🚀 将来性の高い企業のみ（60点以上）
         </button>
+        {gemIds.size > 0 && (
+          <button className={`chip ${gemsOnly ? 'chip--active' : ''}`} onClick={() => setGemsOnly((v) => !v)}>
+            💎 隠れ優良企業のみ（{gemIds.size}）
+          </button>
+        )}
         {dataset.hasLabor && (
           <button className={`chip ${safeOnly ? 'chip--active' : ''}`} onClick={() => setSafeOnly((v) => !v)}>
             🛡 安全な企業のみ（要注意・危険を除外）

@@ -473,6 +473,45 @@ a {
   font-weight: 700;
 }
 
+/* hidden gems */
+.gems-card {
+  border-color: color-mix(in srgb, var(--excellent) 25%, var(--border));
+}
+.gems {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+.gem {
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 13px;
+}
+.gem__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.gem__name {
+  font-weight: 700;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gem__q {
+  font-weight: 800;
+  font-size: 16px;
+}
+.gem__reasons {
+  font-size: 11.5px;
+  color: var(--text-faint);
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
 /* rank cards */
 .rank-card {
   background: var(--bg-elev);
