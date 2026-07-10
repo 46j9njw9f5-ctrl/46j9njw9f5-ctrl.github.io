@@ -1,6 +1,6 @@
 // 相性診断（あなたの優先度で企業をランキング）。
 // 就職者が「重視すること」を選ぶと、その軸の平均で「マッチ度」を算出する。
-// データが無い軸はその企業では除外して平均するため、公平に比較できる。
+// 欠損が多い企業を過大評価しないよう、充足率に応じて中立値50へ補正する。
 
 export interface FitAxis {
   key: string
@@ -36,16 +36,20 @@ export const PERSONAS: Persona[] = [
 export type AxisScores = Record<string, number | null>
 
 /**
- * 選択された優先軸の平均でマッチ度(0–100)を返す。
- * 選択軸のうちデータがある軸だけで平均する。全て欠損なら null。
+ * 選択された優先軸からマッチ度(0–100)を返す。
+ * 半数未満しかデータが無い場合は比較不能として null。
+ * 一部欠損の場合は、欠損率に応じて中立値50へ縮約する。
  */
 export function matchScore(scores: AxisScores, selected: string[]): number | null {
-  if (!selected.length) return null
-  const vals = selected
+  const unique = [...new Set(selected)]
+  if (!unique.length) return null
+  const vals = unique
     .map((k) => scores[k])
     .filter((v): v is number => v !== null && v !== undefined)
-  if (!vals.length) return null
-  return Math.round(vals.reduce((a, b) => a + b, 0) / vals.length)
+  const coverage = vals.length / unique.length
+  if (!vals.length || coverage < 0.5) return null
+  const raw = vals.reduce((a, b) => a + b, 0) / vals.length
+  return Math.round(50 + (raw - 50) * coverage)
 }
 
 /** データセット内で少なくとも1社が値を持つ軸だけを返す（選ばせる意味のある軸）。 */
