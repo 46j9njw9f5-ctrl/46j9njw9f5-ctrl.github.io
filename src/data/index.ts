@@ -1,7 +1,8 @@
 import type { Company } from '../types'
 import { companies as seed } from './companies'
-import generated from './companies.generated.json'
-import analyticsData from './analytics.generated.json'
+
+// 大きな実データ（企業 6MB・全国集計）は初期バンドルから外し、
+// 実行時に動的 import で読み込む（初期JSを大幅に軽量化）。
 
 /** しょくばらぼ由来の業種別・都道府県別の実データ集計。 */
 export interface IndustryStat {
@@ -30,13 +31,51 @@ export interface NationalAnalytics {
   byPrefecture: IndustryStat[]
   overtimeHistogram: { bucket: string; count: number }[]
 }
-export const analytics = analyticsData as NationalAnalytics
+const EMPTY_ANALYTICS: NationalAnalytics = {
+  source: '',
+  total: 0,
+  national: {
+    avgOvertime: null,
+    avgPaidLeave: null,
+    avgWomenManager: null,
+    avgAge: null,
+    counts: { overtime: 0, paidLeave: 0, women: 0, age: 0 },
+  },
+  byIndustry: [],
+  byPrefecture: [],
+  overtimeHistogram: [],
+}
 
-// 実データ（Wikidata・CC0）。事実データ中心で労働指標は未連携。
-export const realCompanies = generated as unknown as Company[]
+// 読み込み後に差し替わる（ESM のライブバインディングで各所へ反映）。
+export let analytics: NationalAnalytics = EMPTY_ANALYTICS
 
-// デモ用シード（架空企業）。労働環境データを含み、ブラック度評価をフル体験できる。
+// 実データ（Wikidata＋公的データ）。読み込み後に同じ配列参照へ流し込む。
+export const realCompanies: Company[] = []
+
+// デモ用シード（架空企業・小さいので静的同梱）。ブラック度評価をフル体験できる。
 export const demoCompanies = seed as Company[]
+
+let loadPromise: Promise<void> | null = null
+
+/** 大きな実データを一度だけ動的に読み込む（冪等）。 */
+export function loadData(): Promise<void> {
+  if (!loadPromise) {
+    loadPromise = Promise.all([
+      import('./companies.generated.json'),
+      import('./analytics.generated.json'),
+    ]).then(([c, a]) => {
+      const companies = (c.default ?? c) as unknown as Company[]
+      realCompanies.splice(0, realCompanies.length, ...companies)
+      analytics = (a.default ?? a) as unknown as NationalAnalytics
+    })
+  }
+  return loadPromise
+}
+
+/** 実データの読み込みが完了しているか。 */
+export function isDataLoaded(): boolean {
+  return realCompanies.length > 0
+}
 
 export type DatasetKey = 'real' | 'demo'
 

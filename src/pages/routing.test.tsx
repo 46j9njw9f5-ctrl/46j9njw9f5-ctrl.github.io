@@ -4,9 +4,10 @@ import { act } from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter, useNavigate, type NavigateFunction } from 'react-router-dom'
 import App from '../App'
-import { datasets } from '../data'
+// 実データは実行時に読み込むため、サンプルIDは静的importから取得する。
+import companiesJson from '../data/companies.generated.json'
 
-const real = datasets.find((d) => d.key === 'real')!.companies
+const real = companiesJson as unknown as { id: string; name: string }[]
 const firstId = real[0].id
 const firstName = real[0].name
 
