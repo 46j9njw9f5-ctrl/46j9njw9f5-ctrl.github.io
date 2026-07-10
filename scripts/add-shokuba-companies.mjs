@@ -2,9 +2,10 @@
 // 実在企業を大量に追加する。実データのみ（推測値なし）。ブラック度(metrics)は付けない。
 //
 //   node scripts/add-shokuba-companies.mjs
-//   SHOKUBA_CSV=/path/to/shokuba.csv CAP=3000 node scripts/add-shokuba-companies.mjs
+//   SHOKUBA_CSV=/path/to/shokuba.csv CAP=8000 node scripts/add-shokuba-companies.mjs
 //
-// 併せて、既存企業(Wikidata由来)の英語・不揃いな業種ラベルを日本語へ正規化する。
+// 併せて、全企業（Wikidata由来・しょくばらぼ由来）の業種を統一カテゴリへ正規化する。
+// 再実行可能: 既存の sk-* 企業を一旦除去してから CAP 件を再追加する。
 
 import { createReadStream, readFileSync, writeFileSync, existsSync, mkdtempSync } from 'node:fs'
 import { execSync } from 'node:child_process'
@@ -17,9 +18,8 @@ const ROOT = join(__dirname, '..')
 const DATA = join(ROOT, 'src', 'data', 'companies.generated.json')
 const URL = 'https://shokuba.mhlw.go.jp/shokuba/utilize/download010?lang=JA'
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
-const CAP = Number(process.env.CAP || 3000)
+const CAP = Number(process.env.CAP || 8000)
 
-// 列インデックス（0始まり・ヘッダ確認済み）
 const COL = {
   corp: 0, name: 1, pref: 5, size: 27, industry: 29, web: 31, founded: 35, sec: 36,
   tenure: 156, age: 178, overtime: 206, paidLeave: 239, women: 408,
@@ -27,31 +27,35 @@ const COL = {
 
 const ACCENTS = ['#7c6cb2', '#4f9d94', '#4f9679', '#ab7d2c', '#5688ac', '#a9769a', '#6b8fb0', '#8a7bb8']
 
-// 業種正規化: Wikidata英語ラベル・不揃いな表記を日本語カテゴリへ寄せる（タスク2）。
-const INDUSTRY_FIX = {
-  'optics industry': '精密・光学機器',
-  'emergency and relief': 'サービス',
-  'real estate industry': '建設・不動産',
-  'フォノグラフィック業界': 'メディア・出版',
-  'アニメーション制作会社': 'アニメーション産業',
-  'エンターテインメント': 'ゲーム・エンタメ',
-  '企業内教育': '教育・学習支援',
-  '英語教育': '教育・学習支援',
-  '学習塾': '教育・学習支援',
-  '食物': '食品・飲料',
-  '酒造所': '食品・飲料',
-  '楽器製作者': '製造業',
-  '水運': '物流・運輸',
-  '結婚式': 'サービス',
-  '求人': 'サービス',
-  'プロレス': 'ゲーム・エンタメ',
-  'メディア企業': 'メディア・出版',
-}
+// 統一業種カテゴリ（キーワード一致で判定。Wikidata・JSIC 双方の表記に対応）。
+// 上から順に評価するので、より具体的なものを先に置く。
+const CANON = [
+  [/半導体|エレクトロ|電機|電子|精密|光学|electronics|optics/i, '電機・精密・半導体'],
+  [/\bit\b|ｉｔ|ソフトウェア|ソフトウエア|インターネット|情報通信|通信|テクノロジ|software|internet/i, 'IT・通信'],
+  [/自動車|輸送機器|機械|重工|造船|産業機械|automobile|machinery/i, '自動車・機械'],
+  [/医薬|製薬|医療|ヘルスケア|介護|福祉|バイオ|生物工学|病院|pharma|health|biotech/i, '医薬・医療・介護'],
+  [/化学|素材|鉄鋼|金属|化粧品|日用品|繊維|アパレル|ゴム|窯業|セメント|chemical|material|steel/i, '化学・素材・金属'],
+  [/食品|飲料|食物|酒|醸造|水産加工|food|beverage/i, '食品・飲料'],
+  [/金融|銀行|保険|証券|信販|リース|投資|finance|bank|insurance/i, '金融・保険'],
+  [/建設|不動産|土木|住宅|建築|construction|real ?estate/i, '建設・不動産'],
+  [/物流|運輸|運送|海運|水運|航空|鉄道|倉庫|郵便|logistics|transport|shipping/i, '運輸・物流'],
+  [/電気|電力|ガス|石油|エネルギー|水道|再生可能|熱供給|energy|utility/i, 'エネルギー・インフラ'],
+  [/メディア|出版|広告|マーケ|ゲーム|エンタメ|エンターテ|アニメ|映画|放送|音楽|フォノグラフィック|プロレス|コンテンツ|media|game|entertainment/i, 'メディア・広告・エンタメ'],
+  [/教育|学習|人材|スクール|塾|英語|学術研究|education|recruit/i, '教育・人材'],
+  [/商社|貿易|trading/i, '商社・卸売'],
+  [/小売|流通|ストア|スーパー|百貨店|コンビニ|卸売|retail|store/i, '小売・流通'],
+  [/農業|林業|漁業|水産|agriculture|fishery/i, '農林・水産'],
+  [/宿泊|飲食|外食|旅行|観光|娯楽|生活関連|冠婚|結婚|美容|清掃|警備|派遣|求人|非営利|複合サービス|専門・技術|サービス|service/i, '生活・サービス'],
+  [/製造|工業|製作|製紙|印刷|家具|楽器|たばこ|タバコ|宇宙|鉱業|manufactur/i, '製造業'],
+]
 
-function canonIndustry(raw) {
-  let t = String(raw || '').replace(/^[A-Za-z0-9]+[:：]/, '').trim() // "D:建設業"→"建設業"
-  t = t.replace(/（他に分類されないもの）/g, '').replace(/，/g, '・').trim()
-  return INDUSTRY_FIX[t] || INDUSTRY_FIX[t.toLowerCase()] || t
+function stripCode(s) {
+  return String(s || '').replace(/^[A-Za-z0-9]+[:：]/, '').replace(/（他に分類されないもの）/g, '').replace(/，/g, '・').trim()
+}
+function toCanon(label) {
+  const t = stripCode(label)
+  for (const [re, cat] of CANON) if (re.test(t)) return cat
+  return 'その他'
 }
 
 function parseLine(line) {
@@ -69,7 +73,6 @@ function parseLine(line) {
 }
 const num = (s) => { const m = String(s || '').replace(/,/g, '').match(/-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : null }
 const inRange = (v, lo, hi) => v !== null && v >= lo && v <= hi
-const strip = (s) => String(s || '').replace(/^[A-Za-z0-9]+[:：]/, '').trim()
 
 function resolveCsv() {
   if (process.env.SHOKUBA_CSV && existsSync(process.env.SHOKUBA_CSV)) return process.env.SHOKUBA_CSV
@@ -83,16 +86,17 @@ function resolveCsv() {
 
 async function main() {
   const csvPath = resolveCsv()
-  const companies = JSON.parse(readFileSync(DATA, 'utf8'))
+  let companies = JSON.parse(readFileSync(DATA, 'utf8'))
 
-  // (タスク2) 既存企業の業種ラベルを正規化
-  let fixed = 0
+  // 再実行時は既存の sk-* を除去（CAP で総数を制御）
+  companies = companies.filter((c) => !String(c.id).startsWith('sk-'))
+
+  // 全企業の業種を統一カテゴリへ正規化（生ラベルは industryRaw に温存）
   for (const c of companies) {
-    const nu = canonIndustry(c.industry)
-    if (nu !== c.industry) { c.industry = nu; fixed++ }
+    if (!c.industryRaw) c.industryRaw = [c.industry]
+    c.industry = toCanon(c.industry)
   }
 
-  // 既存の重複キー
   const seenCorp = new Set()
   const seenName = new Set()
   for (const c of companies) {
@@ -112,20 +116,19 @@ async function main() {
     const name = String(cols[COL.name] || '').trim()
     if (!corp || !name || seenCorp.has(corp) || seenName.has(name)) return
     const emp = num(cols[COL.size])
-    if (!inRange(emp, 1, 5_000_000)) return // 従業員数は必須（規模・将来性に使用）
+    if (!inRange(emp, 1, 5_000_000)) return
     const ot = inRange(num(cols[COL.overtime]), 0, 200) ? num(cols[COL.overtime]) : null
     const pl = inRange(num(cols[COL.paidLeave]), 0, 100) ? num(cols[COL.paidLeave]) : null
     const wm = inRange(num(cols[COL.women]), 0, 100) ? num(cols[COL.women]) : null
-    if (ot === null && pl === null && wm === null) return // 働きやすさが1つも無ければ除外
+    if (ot === null && pl === null && wm === null) return
     const age = inRange(num(cols[COL.age]), 15, 70) ? num(cols[COL.age]) : null
     const tenure = inRange(num(cols[COL.tenure]), 0, 50) ? num(cols[COL.tenure]) : null
-    const jsicRaw = String(cols[COL.industry] || '').trim() // "D:建設業"（分位比較のキー）
+    const jsicRaw = String(cols[COL.industry] || '').trim()
     const foundedM = String(cols[COL.founded] || '').match(/(\d{4})/)
     candidates.push({
-      corp, name,
-      industry: canonIndustry(cols[COL.industry]),
-      jsicRaw,
-      pref: strip(cols[COL.pref]),
+      corp, name, jsicRaw,
+      industry: toCanon(cols[COL.industry]),
+      pref: stripCode(cols[COL.pref]),
       emp: Math.round(emp),
       founded: foundedM ? Number(foundedM[1]) : null,
       listed: Boolean(String(cols[COL.sec] || '').replace(/\D/g, '')),
@@ -151,7 +154,6 @@ async function main() {
     stream.on('error', reject)
   })
 
-  // 働きやすさデータの充実度→規模 の順で上位 CAP 件を採用
   candidates.sort((a, b) => (b.fill - a.fill) || (b.emp - a.emp))
   const picked = candidates.slice(0, CAP)
 
@@ -168,6 +170,7 @@ async function main() {
       id: `sk-${x.corp}`,
       name: x.name,
       industry: x.industry,
+      industryRaw: x.jsicRaw ? [stripCode(x.jsicRaw)] : undefined,
       location: x.pref || '—',
       employees: x.emp,
       founded: x.founded,
@@ -185,9 +188,10 @@ async function main() {
   }
 
   writeFileSync(DATA, JSON.stringify(companies, null, 2), 'utf8')
-  console.log(`✓ 業種ラベル修正: ${fixed}件`)
+  const cats = [...new Set(companies.map((c) => c.industry))]
   console.log(`✓ しょくばらぼから ${picked.length}社を追加（候補 ${candidates.length}社）`)
-  console.log(`✓ 合計: ${companies.length}社`)
+  console.log(`✓ 合計: ${companies.length}社 / 業種カテゴリ ${cats.length}種`)
+  console.log(`  カテゴリ: ${cats.join(', ')}`)
 }
 
 main().catch((e) => { console.error(e); process.exit(1) })
