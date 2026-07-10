@@ -39,7 +39,11 @@ function median(nums: number[]): number {
 
 /**
  * 隠れ優良企業を抽出してランキングする。
- * 条件: 品質スコア >= qualityMin かつ 従業員数が中央値以下（＝規模が控えめ）。
+ * 条件:
+ * - 品質スコア >= qualityMin
+ * - 4軸中3軸以上に実データがある
+ * - 働きやすさまたは安全度の少なくとも一方がある
+ * - 従業員数が中央値以下（＝規模が控えめ）
  */
 export function findHiddenGems(
   items: GemInput[],
@@ -51,7 +55,8 @@ export function findHiddenGems(
   const gems: Gem[] = []
   for (const it of items) {
     const vals = QUALITY_AXES.map((a) => it.scores[a.key]).filter((v): v is number => v !== null && v !== undefined)
-    if (vals.length < 2) continue
+    if (vals.length < 3) continue
+    if (it.scores.workability === null && it.scores.safety === null) continue
     const quality = Math.round(vals.reduce((s, v) => s + v, 0) / vals.length)
     if (quality < qualityMin) continue
     if (it.employees > medEmp) continue // 規模が大きい＝知名度が高い想定は除外
@@ -61,6 +66,7 @@ export function findHiddenGems(
       const v = it.scores[a.key]
       if (v !== null && v !== undefined && v >= 74) reasons.push(`${a.label}が高い`)
     }
+    reasons.push(`評価可能な軸 ${vals.length}/4`)
     reasons.push(`規模は控えめ（従業員${it.employees.toLocaleString()}名）`)
     gems.push({ id: it.id, name: it.name, quality, employees: it.employees, reasons })
   }
