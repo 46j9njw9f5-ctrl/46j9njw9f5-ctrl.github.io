@@ -1,13 +1,13 @@
 /* ============ 書体（同梱・OFL） ============ */
 @font-face {
   font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque.woff2') format('woff2');
+  src: url('./assets/fonts/bricolage-grotesque.woff2') format('woff2');
   font-weight: 400 800;
   font-display: swap;
 }
 @font-face {
   font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono.woff2') format('woff2');
+  src: url('./assets/fonts/jetbrains-mono.woff2') format('woff2');
   font-weight: 400 700;
   font-display: swap;
 }
