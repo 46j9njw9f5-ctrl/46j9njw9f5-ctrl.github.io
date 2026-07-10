@@ -73,7 +73,7 @@ export const monetize = {
 // AdSense / アフィリエイト審査ではこれらの記載が実質必須。
 export const site = {
   name: '-0（ゼロ）',
-  url: 'https://46j9njw9f5-ctrl.github.io/-0/',
+  url: 'https://46j9njw9f5-ctrl.github.io/',
   // 運営者名。審査の信頼性のため実名 or ハンドルネームを推奨。あとで自由に変更可。
   operator: 'ゆう',
   // お問い合わせ先。既定は GitHub の Issue ページ（公開情報）。

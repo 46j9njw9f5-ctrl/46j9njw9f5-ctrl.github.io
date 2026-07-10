@@ -32,9 +32,10 @@ jobs:
       # プロジェクトページ用に base を /<repo>/ に設定してビルド。
       # 収益化ID は GitHub の Variables（Settings → Secrets and variables →
       # Actions → Variables）に登録すれば、コードを触らず有効化できる。
+      # ユーザーページ（46j9njw9f5-ctrl.github.io）はルート配信なので base は '/'
       - run: npm run build
         env:
-          VITE_BASE: /-0/
+          VITE_BASE: /
           VITE_ADSENSE_CLIENT: ${{ vars.VITE_ADSENSE_CLIENT }}
           VITE_ADSENSE_SLOT: ${{ vars.VITE_ADSENSE_SLOT }}
       - uses: actions/upload-pages-artifact@v3
