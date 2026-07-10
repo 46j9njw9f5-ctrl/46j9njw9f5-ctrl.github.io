@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { matchScore, availableAxes } from './fit'
+import { matchScore, availableAxes, describeFit } from './fit'
 
 describe('相性診断', () => {
   const scores = { growth: 80, workability: 60, safety: null, productivity: 90, scale: 70 }
@@ -31,5 +31,39 @@ describe('相性診断', () => {
     expect(keys).toContain('productivity')
     expect(keys).not.toContain('workability')
     expect(keys).not.toContain('safety')
+  })
+})
+
+describe('describeFit（こんな人に向いている）', () => {
+  it('強い軸から「向いている人」を導く', () => {
+    const fit = describeFit({ growth: 85, productivity: 80, workability: null, safety: null, scale: 40 })
+    const texts = fit.suits.map((s) => s.text)
+    expect(texts).toContain('成長産業で挑戦したい人')
+    expect(texts).toContain('少数精鋭で成果を出したい人')
+    // 相性ペルソナが決まる
+    expect(fit.bestPersona).not.toBeNull()
+  })
+
+  it('弱い軸から「気をつけたい人」を導く', () => {
+    const fit = describeFit({ growth: 50, productivity: 50, workability: 30, safety: 35, scale: 50 })
+    expect(fit.caution.length).toBeGreaterThan(0)
+    expect(fit.caution.join('')).toMatch(/ワークライフ|労働環境/)
+  })
+
+  it('規模が小さいと裁量重視の人に向く', () => {
+    const fit = describeFit({ growth: 50, productivity: 50, workability: null, safety: null, scale: 30 })
+    expect(fit.suits.map((s) => s.text)).toContain('裁量を持って幅広く動きたい人')
+  })
+
+  it('データが乏しければ suits も caution も空で summary を返す', () => {
+    const fit = describeFit({ growth: 55, productivity: 55, workability: null, safety: null, scale: 55 })
+    expect(fit.suits).toHaveLength(0)
+    expect(fit.caution).toHaveLength(0)
+    expect(fit.summary).toContain('限られ')
+  })
+
+  it('suits は最大3件に制限', () => {
+    const fit = describeFit({ growth: 90, productivity: 90, workability: 90, safety: 90, scale: 90 })
+    expect(fit.suits.length).toBeLessThanOrEqual(3)
   })
 })

@@ -469,6 +469,7 @@ export default function App() {
           stock={detail.stock}
           evaluation={detail.evaluation}
           workability={detail.workability}
+          scores={detail.scores}
           onClose={() => setDetailId(null)}
         />
       )}

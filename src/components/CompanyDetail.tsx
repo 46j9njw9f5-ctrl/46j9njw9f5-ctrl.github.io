@@ -9,6 +9,7 @@ import type {
 } from '../types'
 import { buildOverview } from '../engine/overview'
 import { buildBenchmark } from '../engine/benchmark'
+import { describeFit, type AxisScores } from '../engine/fit'
 import { formatYen, growthColor, potentialColor, riskColor } from '../ui'
 import { Avatar, Donut, GradeBadge, GrowthBadge, GrowthDonut, RiskBadge, ScoreDonut, Sparkline } from './Bits'
 import { Radar } from './charts'
@@ -20,6 +21,7 @@ interface Props {
   stock: StockSnapshot
   evaluation?: Evaluation
   workability?: WorkabilityEvaluation
+  scores: AxisScores
   onClose: () => void
 }
 
@@ -30,11 +32,13 @@ export function CompanyDetail({
   stock,
   evaluation,
   workability,
+  scores,
   onClose,
 }: Props) {
   const m = company.metrics
   const showMoney = productivity.score !== null || stock.hasData
   const overview = buildOverview({ company, growth, productivity, stock, evaluation, workability })
+  const fit = describeFit(scores)
 
   const tabs: { key: string; label: string }[] = [
     { key: 'overview', label: '総合' },
@@ -129,6 +133,39 @@ export function CompanyDetail({
                   ))}
                 </ul>
               </>
+            )}
+
+            {(fit.suits.length > 0 || fit.caution.length > 0) && (
+              <div className="fitcard">
+                <div className="fitcard__head">
+                  🧭 こんな人に向いている
+                  {fit.bestPersona && (
+                    <span className="fitcard__persona">
+                      {fit.bestPersona.emoji} {fit.bestPersona.label}タイプと好相性
+                    </span>
+                  )}
+                </div>
+                {fit.suits.length > 0 && (
+                  <ul className="fit-suit">
+                    {fit.suits.map((s) => (
+                      <li key={s.key}>{s.text}</li>
+                    ))}
+                  </ul>
+                )}
+                {fit.caution.length > 0 && (
+                  <>
+                    <div className="fitcard__caution-title">△ 気をつけたい人</div>
+                    <ul className="fit-caution">
+                      {fit.caution.map((c, i) => (
+                        <li key={i}>{c}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                <p className="fit-note">
+                  ※ 会社の公式な募集要件ではなく、当サイトのスコア分析にもとづく<b>相性の見立て</b>です。
+                </p>
+              </div>
             )}
 
             {!evaluation && workability && company.laborReal && (
