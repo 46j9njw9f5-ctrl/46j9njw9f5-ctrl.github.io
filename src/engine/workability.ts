@@ -6,7 +6,8 @@ import { overtimeRisk, turnoverRisk, tenureRisk } from './scoring'
  * ワークライフバランス寄りの観点で「どれだけ働きやすいか（0–100、高いほど良い）」を測る。
  *
  * 入力は部分的でよい（公的データでは残業・有給・女性管理職のみ等）。
- * 揃っている観点だけで重みを再正規化して評価する。
+ * 揃っている観点だけで評価しつつ、欠損が多い場合は極端な点数にならないよう
+ * 50点（中立値）へ縮約する。
  */
 
 const clamp = (v: number, min = 0, max = 100): number => Math.max(min, Math.min(max, v))
@@ -34,7 +35,6 @@ function tierOf(score: number): { tier: Tier; label: string } {
 }
 
 export function evaluateWorkability(m: WorkabilityInput): WorkabilityEvaluation {
-  // 揃っている観点だけ factor を作り、重みを再正規化する
   const raw: { key: string; label: string; valueLabel: string; potential: number; base: number }[] = []
   if (m.avgOvertimeHours !== undefined)
     raw.push({ key: 'overtime', label: '残業の少なさ', valueLabel: `${m.avgOvertimeHours}h/月`, potential: 100 - overtimeRisk(m.avgOvertimeHours), base: BASE.overtime })
@@ -47,13 +47,16 @@ export function evaluateWorkability(m: WorkabilityInput): WorkabilityEvaluation 
   if (m.womenManagerRate !== undefined)
     raw.push({ key: 'diversity', label: '多様性（女性管理職）', valueLabel: `${m.womenManagerRate}%`, potential: clamp(m.womenManagerRate * 2.5), base: BASE.diversity })
 
-  const sum = raw.reduce((s, f) => s + f.base, 0) || 1
+  const coverage = clamp(raw.reduce((s, f) => s + f.base, 0), 0, 1)
+  const normalization = coverage || 1
   const factors: GrowthFactor[] = raw.map((f) => {
-    const weight = f.base / sum
+    const weight = f.base / normalization
     return { key: f.key, label: f.label, valueLabel: f.valueLabel, potential: Math.round(f.potential), weight, contribution: f.potential * weight, available: true }
   })
 
-  const score = Math.round(clamp(factors.reduce((s, f) => s + f.contribution, 0)))
+  const rawScore = factors.length ? clamp(factors.reduce((s, f) => s + f.contribution, 0)) : 50
+  // データ充足率が低いほど中立値50へ寄せ、単一指標だけでS/A評価になるのを防ぐ。
+  const score = Math.round(clamp(50 + (rawScore - 50) * coverage))
   const { tier, label } = tierOf(score)
 
   const highlights: string[] = []
@@ -62,6 +65,7 @@ export function evaluateWorkability(m: WorkabilityInput): WorkabilityEvaluation 
   if (m.turnover3yrRate !== undefined && m.turnover3yrRate <= 10) highlights.push('定着率が高く長く働ける')
   if (m.womenManagerRate !== undefined && m.womenManagerRate >= 25) highlights.push('女性の登用が進んでいる')
   if (m.avgTenureYears !== undefined && m.avgTenureYears >= 12) highlights.push('平均勤続が長く安定している')
+  if (coverage < 0.6) highlights.push(`公開データの充足率が${Math.round(coverage * 100)}%のため、評価を中立値へ補正`)
 
   return { score, tier, tierLabel: label, factors, highlights }
 }

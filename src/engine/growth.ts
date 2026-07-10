@@ -27,7 +27,7 @@ function piecewise(x: number, points: [number, number][]): number {
   return last[1]
 }
 
-const CURRENT_YEAR = 2025
+const CURRENT_YEAR = new Date().getFullYear()
 
 /**
  * 時系列から年平均成長率(CAGR, %)を算出。単位不整合の外れ値を除外し、

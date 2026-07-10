@@ -4,13 +4,17 @@ import { matchScore, availableAxes, describeFit } from './fit'
 describe('相性診断', () => {
   const scores = { growth: 80, workability: 60, safety: null, productivity: 90, scale: 70 }
 
-  it('選択軸の平均でマッチ度を出す', () => {
+  it('選択軸が揃っていれば平均でマッチ度を出す', () => {
     expect(matchScore(scores, ['growth', 'productivity'])).toBe(85)
   })
 
-  it('データが無い軸は平均から除外する', () => {
-    // safety は null なので growth のみ
-    expect(matchScore(scores, ['growth', 'safety'])).toBe(80)
+  it('半分だけ欠損なら中立値へ補正する', () => {
+    // growth=80 の生値を、充足率50%に応じて 65 へ縮約
+    expect(matchScore(scores, ['growth', 'safety'])).toBe(65)
+  })
+
+  it('半数未満しか揃わなければ比較不能にする', () => {
+    expect(matchScore(scores, ['growth', 'safety', 'unknown'])).toBeNull()
   })
 
   it('選択が無ければ null', () => {
@@ -19,6 +23,10 @@ describe('相性診断', () => {
 
   it('選んだ軸が全て欠損なら null', () => {
     expect(matchScore(scores, ['safety'])).toBeNull()
+  })
+
+  it('重複した選択軸を二重計上しない', () => {
+    expect(matchScore(scores, ['growth', 'growth', 'productivity'])).toBe(85)
   })
 
   it('availableAxes はデータのある軸だけ返す', () => {
@@ -40,7 +48,6 @@ describe('describeFit（こんな人に向いている）', () => {
     const texts = fit.suits.map((s) => s.text)
     expect(texts).toContain('成長産業で挑戦したい人')
     expect(texts).toContain('少数精鋭で成果を出したい人')
-    // 相性ペルソナが決まる
     expect(fit.bestPersona).not.toBeNull()
   })
 

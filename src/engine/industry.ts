@@ -72,9 +72,19 @@ const TABLE: [string, Outlook][] = [
 
 const DEFAULT: Outlook = { score: 50, note: '平均的な見通し' }
 
+function matchesKeyword(label: string, key: string): boolean {
+  const normalizedKey = key.toLowerCase()
+  // ai / it のような短い英字は単語単位で判定し、retail 等への誤一致を防ぐ。
+  if (/^[a-z0-9]+$/.test(normalizedKey) && normalizedKey.length <= 2) {
+    const escaped = normalizedKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    return new RegExp(`(^|[^a-z0-9])${escaped}($|[^a-z0-9])`, 'i').test(label)
+  }
+  return label.includes(normalizedKey)
+}
+
 /** 業種ラベルから将来性アウトルックを返す。 */
 export function industryOutlook(industry: string): Outlook {
-  const l = (industry || '').toLowerCase()
-  for (const [key, o] of TABLE) if (l.includes(key.toLowerCase())) return o
+  const label = (industry || '').toLowerCase()
+  for (const [key, outlook] of TABLE) if (matchesKeyword(label, key)) return outlook
   return DEFAULT
 }
