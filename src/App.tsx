@@ -10,6 +10,8 @@ const MethodologyPage = lazy(() => import('./pages/MethodologyPage'))
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
+const RegionIndexPage = lazy(() => import('./pages/RegionIndexPage'))
+const RegionPage = lazy(() => import('./pages/RegionPage'))
 
 function AppLoading() {
   return (
@@ -56,6 +58,9 @@ export default function App() {
             <Route index element={null} />
             <Route path="company/:id" element={<CompanyDetailRoute />} />
           </Route>
+          <Route path="/area" element={<RegionIndexPage />} />
+          <Route path="/area/:pref" element={<RegionPage />} />
+          <Route path="/area/:pref/:theme" element={<RegionPage />} />
           <Route path="/methodology" element={<MethodologyPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/contact" element={<ContactPage />} />

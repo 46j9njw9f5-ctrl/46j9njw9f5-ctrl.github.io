@@ -88,6 +88,7 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <nav className="site-footer__links" aria-label="サイト情報">
+        <Link to="/area">地域から探す</Link>
         <Link to="/methodology">スコアの算出方法</Link>
         <Link to="/privacy">プライバシーポリシー</Link>
         <Link to="/contact">運営者情報・お問い合わせ</Link>

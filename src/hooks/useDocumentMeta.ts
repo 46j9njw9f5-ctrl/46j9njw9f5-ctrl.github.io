@@ -12,6 +12,10 @@ export interface MetaInput {
   /** 先頭スラッシュ付きのパス（例: '/company/Q53268'） */
   path: string
   ogType?: string
+  /** true で noindex（薄い/データ不足ページの検索インデックス除外） */
+  noindex?: boolean
+  /** 構造化データ（JSON-LD）。ページ離脱時に除去する。 */
+  jsonLd?: Record<string, unknown>
 }
 
 function upsertMeta(attr: 'name' | 'property', key: string, content: string) {
@@ -36,12 +40,14 @@ function upsertLink(rel: string, href: string) {
   el.setAttribute('href', href)
 }
 
-export function useDocumentMeta({ title, description, path, ogType = 'website' }: MetaInput) {
+export function useDocumentMeta({ title, description, path, ogType = 'website', noindex = false, jsonLd }: MetaInput) {
   useEffect(() => {
     const url = SITE_ORIGIN + path
     document.title = title
     upsertMeta('name', 'description', description)
     upsertLink('canonical', url)
+    // SPA遷移で状態が残らないよう robots は毎回明示する。
+    upsertMeta('name', 'robots', noindex ? 'noindex,follow' : 'index,follow')
     upsertMeta('property', 'og:title', title)
     upsertMeta('property', 'og:description', description)
     upsertMeta('property', 'og:url', url)
@@ -50,5 +56,18 @@ export function useDocumentMeta({ title, description, path, ogType = 'website' }
     upsertMeta('name', 'twitter:card', 'summary')
     upsertMeta('name', 'twitter:title', title)
     upsertMeta('name', 'twitter:description', description)
-  }, [title, description, path, ogType])
+
+    // 構造化データ（JSON-LD）。当フックが管理する1枠のみを更新/除去。
+    const ID = 'ld-json-managed'
+    const existing = document.getElementById(ID)
+    if (jsonLd) {
+      const el = existing ?? document.createElement('script')
+      el.id = ID
+      ;(el as HTMLScriptElement).type = 'application/ld+json'
+      el.textContent = JSON.stringify(jsonLd)
+      if (!existing) document.head.appendChild(el)
+    } else if (existing) {
+      existing.remove()
+    }
+  }, [title, description, path, ogType, noindex, jsonLd])
 }
