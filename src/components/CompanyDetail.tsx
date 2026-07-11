@@ -16,6 +16,7 @@ import { Avatar, Donut, GradeBadge, GrowthBadge, GrowthDonut, RiskBadge, ScoreDo
 import { Radar } from './charts'
 import { CompanyCTA } from '../monetize/Ad'
 import { track } from '../analytics/track'
+import { ReportCard } from '../features/report/ReportCard'
 
 interface Props {
   company: Company
@@ -212,6 +213,8 @@ export function CompanyDetail({
               website={company.website}
               industry={company.industry}
             />
+
+            <ReportCard inputs={[{ company, growth, productivity, stock, evaluation, workability, scores }]} />
 
             <p className="assert-note">
               ※ 各スコアは公開データにもとづく<b>参考指標</b>で、現在の企業の状態を断定するものではありません。

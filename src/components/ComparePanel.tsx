@@ -3,19 +3,24 @@ import type {
   Evaluation,
   GrowthEvaluation,
   ProductivityEvaluation,
+  StockSnapshot,
   WorkabilityEvaluation,
 } from '../types'
+import type { AxisScores } from '../engine/fit'
 import { useModalA11y } from '../hooks/useModalA11y'
 import { formatYen, growthColor, levelColor } from '../ui'
 import { Avatar } from './Bits'
 import { Radar, CATEGORICAL } from './charts'
+import { ReportCard } from '../features/report/ReportCard'
 
 interface Row {
   company: Company
   growth: GrowthEvaluation
   productivity: ProductivityEvaluation
+  stock: StockSnapshot
   evaluation?: Evaluation
   workability?: WorkabilityEvaluation
+  scores: AxisScores
 }
 
 export function ComparePanel({ rows, onClose }: { rows: Row[]; onClose: () => void }) {
@@ -166,6 +171,18 @@ export function ComparePanel({ rows, onClose }: { rows: Row[]; onClose: () => vo
             </tbody>
           </table>
         </div>
+
+        <ReportCard
+          inputs={rows.map((r) => ({
+            company: r.company,
+            growth: r.growth,
+            productivity: r.productivity,
+            stock: r.stock,
+            evaluation: r.evaluation,
+            workability: r.workability,
+            scores: r.scores,
+          }))}
+        />
       </div>
     </div>
   )

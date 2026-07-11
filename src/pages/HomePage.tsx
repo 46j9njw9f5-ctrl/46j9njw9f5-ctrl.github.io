@@ -11,6 +11,7 @@ import { activeAffiliates, hasAdsense, hasAnyAds } from '../monetize/config'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { useDebouncedSearch } from '../hooks/useDebouncedValue'
 import { track } from '../analytics/track'
+import { ReportInterestSummary, isReportStatsEnabled } from '../features/report/ReportInterestSummary'
 
 // 重いUIは初期バンドルから分離（React.lazy）。チャートもこの分割に含まれる。
 const Dashboard = lazy(() => import('../components/Dashboard').then((m) => ({ default: m.Dashboard })))
@@ -251,6 +252,7 @@ export default function HomePage() {
 
   return (
     <div className="app">
+      {isReportStatsEnabled() && <ReportInterestSummary />}
       <header className="header">
         <div className="header__top">
           <div className="brand">
