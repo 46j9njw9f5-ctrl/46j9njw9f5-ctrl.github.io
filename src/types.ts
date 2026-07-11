@@ -48,6 +48,8 @@ export interface RealLabor {
   source: string
   /** 取得日 */
   asOf?: string
+  /** 離職率・勤続年数（しょくばらぼ由来）を取得した日 */
+  retentionAsOf?: string
 }
 
 /** 労働環境の指標（ブラック度スコアの入力）。実データが無い企業では未連携となる。 */
