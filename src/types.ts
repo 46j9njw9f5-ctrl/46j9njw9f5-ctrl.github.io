@@ -111,10 +111,37 @@ export interface Company {
   corporateNumber?: string
   /** 公的データ由来の実労働データ（部分的） */
   laborReal?: RealLabor
+  /** gBizINFO（経済産業省）由来の事実（資本金・設立・認定 等）。未連携なら undefined */
+  gbiz?: GbizInfo
   /** 出典 */
   source?: DataSource
   /** 労働環境の指標（未連携なら undefined） */
   metrics?: CompanyMetrics
+}
+
+/** gBizINFO（経済産業省）由来の公的認定・表彰。 */
+export interface GbizCertification {
+  /** 届出認定等（例：くるみん認定、えるぼし認定、ユースエール認定） */
+  title: string
+  category?: string
+  target?: string
+  approvedOn?: string
+}
+
+/** gBizINFO 由来の事実データ（法人番号で同定・推測なし）。 */
+export interface GbizInfo {
+  capitalStock?: number
+  established?: string
+  employees?: number
+  womenEmployees?: number
+  menEmployees?: number
+  representative?: string
+  businessSummary?: string
+  certifications: GbizCertification[]
+  subsidyCount?: number
+  procurementCount?: number
+  source: string
+  asOf?: string
 }
 
 /** 労働環境データを持つ企業（ブラック度評価の対象）。 */

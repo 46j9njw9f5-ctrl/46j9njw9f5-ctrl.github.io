@@ -2685,6 +2685,70 @@ a {
   }
 }
 
+/* gBizINFO 公的登録・認定（事実） */
+.gbiz {
+  margin: 14px 0 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--excellent);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elev);
+}
+.gbiz__head {
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.gbiz__certs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.gbiz__cert {
+  font-size: 11.5px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-dim);
+  background: var(--bg);
+}
+.gbiz__cert--notable {
+  color: #1f7a4d;
+  border-color: color-mix(in srgb, #1f7a4d 40%, transparent);
+  background: color-mix(in srgb, #1f7a4d 12%, transparent);
+  font-weight: 700;
+}
+.gbiz__kv {
+  list-style: none;
+  margin: 0 0 6px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.gbiz__kv li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 12.5px;
+}
+.gbiz__kv-label {
+  color: var(--text-dim);
+  min-width: 6.5em;
+}
+.gbiz__summary {
+  margin: 4px 0;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.gbiz__src {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 6px;
+}
+
 /* ── 開示・信用表示（claims matrix 準拠） ───────────────────── */
 .card__coverage {
   font-size: 11px;

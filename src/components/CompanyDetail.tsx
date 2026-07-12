@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom'
 import { CompanyCTA } from '../monetize/Ad'
 import { track } from '../analytics/track'
 import { ReportCard } from '../features/report/ReportCard'
+import { GbizFacts } from './GbizFacts'
 import {
   FIT_CAVEAT,
   FOUR_WAY_KEY,
@@ -223,6 +224,8 @@ export function CompanyDetail({
                 しょくばらぼ 等）の連携でこの企業にも表示されます。今すぐ体験するにはヘッダーの「デモ」データへ。
               </div>
             )}
+
+            <GbizFacts gbiz={company.gbiz} />
 
             <CompanyCTA
               companyId={company.id}
