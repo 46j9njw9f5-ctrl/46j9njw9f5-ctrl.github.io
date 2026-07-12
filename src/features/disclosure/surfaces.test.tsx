@@ -67,6 +67,20 @@ describe('リリース面の開示・用語ガード', () => {
     expect(text).toContain('事実＝出典から直接取得')
   })
 
+  it('リスク判定の全水準（良好〜高リスク）の講評に断定・旧用語が出ない', () => {
+    // 各 riskLevel の verdict 分岐を網羅（ブラック度/ホワイト度の残存を検出）。
+    const profiles = [
+      { avgOvertimeHours: 5, paidLeaveRate: 95, turnover3yrRate: 2, avgTenureYears: 18, womenManagerRate: 40 }, // excellent
+      { avgOvertimeHours: 95, paidLeaveRate: 15, turnover3yrRate: 55, avgTenureYears: 1, overtimePaidRate: 30, harassmentIndex: 9, laborViolationCount: 3, alwaysHiring: true, socialInsurance: false }, // danger
+    ]
+    for (const p of profiles) {
+      const { unmount } = renderDetail(demoRow(p))
+      const text = document.body.textContent ?? ''
+      for (const term of PROHIBITED) expect(text).not.toContain(term)
+      unmount()
+    }
+  })
+
   it('公開データの無い実在企業には労働環境リスクスコアを出さない（未連携表示）', () => {
     renderDetail(realRow({ avgOvertimeHours: 20, paidLeaveRate: 70 }))
     // 労働環境リスク（black系）のタブ・根拠は出ない

@@ -231,13 +231,13 @@ function buildVerdict(blackScore: number, level: RiskLevel, c: CompanyWithLabor)
   const name = c.name
   switch (level) {
     case 'danger':
-      return `${name} はブラック度 ${blackScore} と高く、応募は慎重に。特に長時間労働・離職率・残業代の実態を必ず面接で確認してください。`
+      return `${name} は公開データ上の労働環境リスク指標が高め（独自指標 ${blackScore}）。応募は慎重に、特に長時間労働・離職率・残業代の実態を必ず面接で確認してください。`
     case 'caution':
-      return `${name} は要注意水準（ブラック度 ${blackScore}）。気になる指標が複数あります。労働条件通知書と実残業時間を確認しましょう。`
+      return `${name} は要確認の水準（独自指標 ${blackScore}）。気になる指標が複数あります。労働条件通知書と実残業時間を確認しましょう。`
     case 'standard':
-      return `${name} は概ね標準的（ブラック度 ${blackScore}）。目立った赤信号は少ないですが、配属先による差に注意。`
+      return `${name} は概ね標準的（独自指標 ${blackScore}）。目立った懸念は少ないですが、配属先による差に注意。`
     case 'excellent':
-      return `${name} は健全性が高い水準（ホワイト度 ${100 - blackScore}）。労働環境の指標は良好です。`
+      return `${name} は公開データ上は良好な水準（労働環境スコア ${100 - blackScore}／独自指標）。実態は面接等でご確認ください。`
   }
 }
 
