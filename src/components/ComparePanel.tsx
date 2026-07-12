@@ -54,7 +54,7 @@ export function ComparePanel({ rows, onClose }: { rows: Row[]; onClose: () => vo
             { label: '将来性', get: (r: Row) => r.growth.growthScore as number | null },
             { label: '生産性', get: (r: Row) => r.productivity.score },
             { label: '働きやすさ', get: (r: Row) => r.workability?.score ?? null },
-            { label: '安全度', get: (r: Row) => r.evaluation?.whiteScore ?? null },
+            { label: '労働環境', get: (r: Row) => r.evaluation?.whiteScore ?? null },
           ]
           const active = AXES.filter((ax) => rows.every((r) => ax.get(r) !== null && ax.get(r) !== undefined))
           if (active.length < 3 || rows.length < 2) return null

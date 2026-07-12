@@ -41,7 +41,7 @@ export function buildOverview(input: OverviewInput): Overview {
   const axes: OverviewAxis[] = [{ key: 'growth', label: '将来性', score: growth.growthScore }]
   if (productivity.score !== null) axes.push({ key: 'productivity', label: '生産性', score: productivity.score })
   if (workability) axes.push({ key: 'workability', label: '働きやすさ', score: workability.score })
-  if (evaluation) axes.push({ key: 'safety', label: '安全度', score: evaluation.whiteScore })
+  if (evaluation) axes.push({ key: 'safety', label: '労働環境', score: evaluation.whiteScore })
 
   // --- 平易な総合コメント ---
   const parts: string[] = []

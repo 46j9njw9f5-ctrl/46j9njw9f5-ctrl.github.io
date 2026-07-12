@@ -13,7 +13,7 @@ export default function RegionIndexPage() {
   useDocumentMeta({
     title: '地域・条件から企業を探す | -0（ゼロ）',
     description:
-      '都道府県 × 条件（残業が少ない・有給取得率が高い・将来性が高い・隠れ優良）で企業を検索。公開データ（Wikidata・厚労省しょくばらぼ）にもとづく参考指標です。',
+      '都道府県 × 条件（残業が少ない・有給取得率が高い・成長シグナルが強い・注目企業候補）で企業を検索。公開データ（Wikidata・厚労省しょくばらぼ）にもとづく参考指標です。',
     path: '/area',
   })
 

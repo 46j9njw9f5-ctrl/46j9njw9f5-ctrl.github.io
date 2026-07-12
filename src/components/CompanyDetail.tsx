@@ -14,9 +14,18 @@ import { useModalA11y } from '../hooks/useModalA11y'
 import { formatYen, growthColor, potentialColor, riskColor } from '../ui'
 import { Avatar, Donut, GradeBadge, GrowthBadge, GrowthDonut, RiskBadge, ScoreDonut, Sparkline } from './Bits'
 import { Radar } from './charts'
+import { Link } from 'react-router-dom'
 import { CompanyCTA } from '../monetize/Ad'
 import { track } from '../analytics/track'
 import { ReportCard } from '../features/report/ReportCard'
+import {
+  FIT_CAVEAT,
+  FOUR_WAY_KEY,
+  CORRECTION_CTA,
+  MISSING_BLOCK_TITLE,
+  oldDataWarning,
+  isOldData,
+} from '../features/disclosure/copy'
 
 interface Props {
   company: Company
@@ -43,6 +52,9 @@ export function CompanyDetail({
   const showMoney = productivity.score !== null || stock.hasData
   const overview = buildOverview({ company, growth, productivity, stock, evaluation, workability })
   const fit = describeFit(scores)
+  const laborAsOf = company.laborReal?.asOf
+  const stale = isOldData(laborAsOf, new Date().toISOString())
+  const missingItems = workability?.missingItems ?? []
 
   const tabs: { key: string; label: string }[] = [
     { key: 'overview', label: '総合' },
@@ -120,6 +132,11 @@ export function CompanyDetail({
 
         {tab === 'overview' && (
           <div className="tab-body" role="tabpanel" id="cd-panel-overview" aria-labelledby="cd-tab-overview" tabIndex={0}>
+            {stale && laborAsOf && (
+              <div className="notice notice--warn" role="note">
+                ⏳ {oldDataWarning(laborAsOf)}
+              </div>
+            )}
             <div className="grade-row">
               {overview.axes.map((a) => (
                 <div className="grade-cell" key={a.key}>
@@ -164,7 +181,7 @@ export function CompanyDetail({
             {(fit.suits.length > 0 || fit.caution.length > 0) && (
               <div className="fitcard">
                 <div className="fitcard__head">
-                  🧭 こんな人に向いている
+                  🧭 重視条件との一致が見られる点（参考）
                   {fit.bestPersona && (
                     <span className="fitcard__persona">
                       {fit.bestPersona.emoji} {fit.bestPersona.label}タイプと好相性
@@ -189,7 +206,7 @@ export function CompanyDetail({
                   </>
                 )}
                 <p className="fit-note">
-                  ※ 会社の公式な募集要件ではなく、当サイトのスコア分析にもとづく<b>相性の見立て</b>です。
+                  ※ 会社の公式な募集要件ではなく、当サイトのスコア分析にもとづく<b>相性の見立て</b>です。{FIT_CAVEAT}
                 </p>
               </div>
             )}
@@ -216,11 +233,31 @@ export function CompanyDetail({
 
             <ReportCard inputs={[{ company, growth, productivity, stock, evaluation, workability, scores }]} />
 
+            <div className="missing-block" role="note">
+              <div className="missing-block__title">🔎 {MISSING_BLOCK_TITLE}</div>
+              <ul className="missing-block__list">
+                {missingItems.map((mi) => (
+                  <li key={mi}>{mi}：未公表</li>
+                ))}
+                {!evaluation && <li>労働環境リスク（残業代・法令違反等）：未連携（実在企業に推定値は付与しません）</li>}
+                {productivity.score === null && <li>生産性・財務：未連携</li>}
+                {missingItems.length === 0 && evaluation && productivity.score !== null && (
+                  <li>主要項目は公開データで揃っています</li>
+                )}
+              </ul>
+              <p className="missing-block__note">未公表は「良い／悪い」ではなく、公開データが無いという意味です。</p>
+            </div>
+
             <p className="assert-note">
               ※ 各スコアは公開データにもとづく<b>参考指標</b>で、現在の企業の状態を断定するものではありません。
               応募前に求人票・面接・公式情報で必ずご確認ください。
+              <br />
+              <span className="assert-note__key">{FOUR_WAY_KEY}</span>
             </p>
             <SourceLine company={company} />
+            <p className="correction-line">
+              <Link to="/contact">{CORRECTION_CTA} ↗</Link>
+            </p>
           </div>
         )}
 
@@ -387,7 +424,7 @@ export function CompanyDetail({
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <RiskBadge evaluation={evaluation} />
                 <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
-                  ホワイト度 <b style={{ color: 'var(--text)' }}>{evaluation.whiteScore}</b> / 100
+                  労働環境スコア（独自指標） <b style={{ color: 'var(--text)' }}>{evaluation.whiteScore}</b> / 100
                 </span>
               </div>
             </div>

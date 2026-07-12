@@ -12,7 +12,7 @@ export interface FitAxis {
 export const FIT_AXES: FitAxis[] = [
   { key: 'growth', label: '成長したい（将来性）', short: '将来性' },
   { key: 'workability', label: '働きやすさ重視', short: '働きやすさ' },
-  { key: 'safety', label: 'ブラックを避けたい', short: '安全度' },
+  { key: 'safety', label: '健全な労働環境を重視', short: '労働環境' },
   { key: 'productivity', label: '稼ぐ力・生産性', short: '生産性' },
   { key: 'scale', label: '規模の安定', short: '規模' },
 ]

@@ -102,10 +102,10 @@ export const WEIGHTS = {
 
 /** 区分の判定。 */
 export function riskLevel(blackScore: number): { level: RiskLevel; label: string } {
-  if (blackScore < 25) return { level: 'excellent', label: '優良（ホワイト）' }
-  if (blackScore < 45) return { level: 'standard', label: '標準' }
-  if (blackScore < 65) return { level: 'caution', label: '要注意' }
-  return { level: 'danger', label: '労働環境リスク：高' }
+  if (blackScore < 25) return { level: 'excellent', label: '公開データ上：良好' }
+  if (blackScore < 45) return { level: 'standard', label: '公開データ上：標準' }
+  if (blackScore < 65) return { level: 'caution', label: '要確認' }
+  return { level: 'danger', label: '要確認（リスク指標高）' }
 }
 
 function buildFactors(c: CompanyWithLabor): FactorScore[] {

@@ -8,6 +8,7 @@ import type {
 } from '../types'
 import { formatYen, growthColor } from '../ui'
 import { Avatar, GradeBadge, GrowthBadge } from './Bits'
+import { coverageLabel } from '../features/disclosure/copy'
 
 interface Props {
   company: Company
@@ -42,7 +43,7 @@ function CompanyCardBase({
     <div className="card">
       {match !== null && match !== undefined && (
         <div className="card__match" style={{ background: `color-mix(in srgb, ${growthColor(match)} 16%, transparent)`, borderColor: `color-mix(in srgb, ${growthColor(match)} 45%, transparent)` }}>
-          <span style={{ color: growthColor(match), fontWeight: 800 }}>マッチ度 {match}%</span>
+          <span style={{ color: growthColor(match), fontWeight: 800 }}>重視条件との一致度 {match}%</span>
         </div>
       )}
       <div className="card__top">
@@ -65,7 +66,7 @@ function CompanyCardBase({
         {[
           { score: growth.growthScore, label: '将来性' },
           workability ? { score: workability.score, label: '働きやすさ' } : null,
-          evaluation ? { score: evaluation.whiteScore, label: '安全度' } : null,
+          evaluation ? { score: evaluation.whiteScore, label: '労働環境' } : null,
           productivity.score !== null ? { score: productivity.score, label: '生産性' } : null,
         ]
           .filter((g): g is { score: number; label: string } => g !== null)
@@ -79,7 +80,7 @@ function CompanyCardBase({
         <GrowthBadge growth={growth} />
         <span className="card__fact">
           {evaluation && evaluation.redFlags.length > 0
-            ? `⚠ 危険信号 ${evaluation.redFlags.length}件`
+            ? `⚠ 確認したい労働指標 ${evaluation.redFlags.length}件`
             : growth.revenueCagr !== null
               ? `売上 年率 ${growth.revenueCagr.toFixed(1)}%`
               : productivity.revenuePerEmployee !== null
@@ -107,6 +108,15 @@ function CompanyCardBase({
           </>
         )}
       </div>
+
+      {(() => {
+        const cov = coverageLabel(workability)
+        return cov ? (
+          <div className={`card__coverage card__coverage--${cov.level}`} title="公開されている働きやすさ指標の充足度">
+            <span aria-hidden="true">●</span> {cov.text}
+          </div>
+        ) : null
+      })()}
 
       {company.source && (
         <div className="card__source">

@@ -107,11 +107,12 @@ const BASE_WEIGHTS = {
   capital: 0.1,
 }
 
+// 表示ラベルは「将来を保証しない公開データ上の傾向」を示す表現にする（断定回避）。
 const STAGES: Record<GrowthStage, string> = {
-  hypergrowth: '急成長期',
-  growth: '成長期',
-  mature: '成熟・安定',
-  declining: '転換期・要注意',
+  hypergrowth: '成長シグナル：強（若い企業）',
+  growth: '成長シグナル：中',
+  mature: '成熟期',
+  declining: '転換期（要確認）',
 }
 
 function classify(score: number, revCagr: number | null): GrowthStage {

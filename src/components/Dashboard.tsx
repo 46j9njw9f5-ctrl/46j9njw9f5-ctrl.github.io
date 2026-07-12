@@ -87,6 +87,10 @@ export function Dashboard({ rows, datasetLabel }: { rows: Row[]; datasetLabel: s
         <p className="dash__src">
           出典: {n.source} ・ 集計対象 <b>{n.total.toLocaleString()}社</b>（無認証の公開データ）
         </p>
+        <p className="dash__note">
+          ※ 各平均は<b>公表企業のみ</b>の単純平均です（母数は各値の「◯社が公表」を参照）。母数の小さい業種はぶれやすく、
+          業種・地域・時期・企業規模の違いを含みます。数値どうしの因果関係を示すものではありません。
+        </p>
         <div className="tile-row">
           <StatTile value={String(n.national.avgOvertime ?? '—')} unit="h" label="平均残業時間/月" sub={`${n.national.counts.overtime.toLocaleString()}社が公表`} />
           <StatTile value={String(n.national.avgPaidLeave ?? '—')} unit="%" label="有給取得率" sub={`${n.national.counts.paidLeave.toLocaleString()}社`} />
@@ -132,7 +136,7 @@ export function Dashboard({ rows, datasetLabel }: { rows: Row[]; datasetLabel: s
         <h2 className="dash__h">🏢 {datasetLabel} の分析（{rows.length}社）</h2>
         <div className="dash__grid">
           <figure className="chart-card">
-            <figcaption>業種別 平均将来性スコア（上位10）</figcaption>
+            <figcaption>業種別 平均将来性スコア（独自指標・上位10）</figcaption>
             <HBar data={portfolio.industryGrowth} color="var(--standard)" max={100} />
           </figure>
           {portfolio.scatter.length > 0 && (
@@ -150,7 +154,7 @@ export function Dashboard({ rows, datasetLabel }: { rows: Row[]; datasetLabel: s
 
         {portfolio.gems.length > 0 && (
           <figure className="chart-card gems-card">
-            <figcaption>💎 隠れ優良企業（規模は控えめでも各軸が高い）</figcaption>
+            <figcaption>⭐ 注目企業候補（規模は控えめでも各軸が高い・独自指標の目安）</figcaption>
             <div className="gems">
               {portfolio.gems.map((g) => (
                 <div className="gem" key={g.id}>

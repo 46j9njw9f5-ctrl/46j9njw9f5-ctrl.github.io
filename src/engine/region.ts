@@ -98,15 +98,15 @@ export const THEMES: RegionTheme[] = [
   },
   {
     slug: 'promising',
-    label: '将来性が高い',
-    description: '将来性スコアが高い順',
+    label: '成長シグナルが強い',
+    description: '将来性スコア（独自指標）が高い順',
     eligible: (r) => r.growth.growthScore >= 60,
     compare: (a, b) => b.growth.growthScore - a.growth.growthScore,
   },
   {
     slug: 'hidden-gems',
-    label: '隠れ優良',
-    description: '知名度は高くないが、成長性・労働環境のバランスが良い企業',
+    label: '注目企業候補',
+    description: '規模は控えめでも各軸のバランスが良い、注目候補（規模を露出度の代理に使う目安）',
     // 対象判定は隠れ優良の企業ID集合（selectRegion で算出）で行う。
     eligible: () => true,
     compare: (a, b) => b.growth.growthScore - a.growth.growthScore,

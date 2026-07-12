@@ -12,6 +12,7 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { useDebouncedSearch } from '../hooks/useDebouncedValue'
 import { track } from '../analytics/track'
 import { ReportInterestSummary, isReportStatsEnabled } from '../features/report/ReportInterestSummary'
+import { SCORE_CAVEAT, FOUR_WAY_KEY } from '../features/disclosure/copy'
 
 // 重いUIは初期バンドルから分離（React.lazy）。チャートもこの分割に含まれる。
 const Dashboard = lazy(() => import('../components/Dashboard').then((m) => ({ default: m.Dashboard })))
@@ -20,13 +21,13 @@ const ComparePanel = lazy(() => import('../components/ComparePanel').then((m) =>
 type SortKey = 'match' | 'growth' | 'growthLow' | 'productivity' | 'white' | 'black' | 'work' | 'employees' | 'young'
 
 const SORTS: { key: SortKey; label: string; need?: 'work' | 'eval' }[] = [
-  { key: 'growth', label: '将来性が高い順' },
-  { key: 'growthLow', label: '将来性が低い順' },
+  { key: 'growth', label: '成長シグナルが強い順（独自指標）' },
+  { key: 'growthLow', label: '成長シグナルが弱い順（独自指標）' },
   { key: 'productivity', label: '生産性が高い順' },
   { key: 'employees', label: '規模が大きい順' },
   { key: 'young', label: '設立が新しい順' },
   { key: 'work', label: '働きやすい順', need: 'work' },
-  { key: 'white', label: 'ホワイト度が高い順', need: 'eval' },
+  { key: 'white', label: '労働環境スコアが高い順（独自指標）', need: 'eval' },
   { key: 'black', label: '労働環境リスクが高い順', need: 'eval' },
 ]
 
@@ -247,7 +248,7 @@ export default function HomePage() {
   const hasEval = rows.some((r) => r.evaluation)
   const baseSorts = SORTS.filter((s) => !s.need || (s.need === 'work' ? hasWork : hasEval))
   const availableSorts = priorities.length
-    ? [{ key: 'match' as SortKey, label: 'あなたへのマッチ度順' }, ...baseSorts]
+    ? [{ key: 'match' as SortKey, label: '重視条件との一致度順' }, ...baseSorts]
     : baseSorts
 
   return (
@@ -286,7 +287,7 @@ export default function HomePage() {
             </button>
             <button className="quickstart__btn" onClick={findGems}>
               <span className="quickstart__icon" aria-hidden="true">💎</span>
-              <span className="quickstart__label">隠れ優良企業</span>
+              <span className="quickstart__label">注目企業候補</span>
             </button>
             <Link className="quickstart__btn" to="/area">
               <span className="quickstart__icon" aria-hidden="true">📍</span>
@@ -350,9 +351,9 @@ export default function HomePage() {
                 <span className="legend__g" style={{ color: 'var(--danger)' }}>D 要注意</span>
               </div>
               <p>
-                各スコアは 0〜100 で、<b>高いほど良い向き</b>に揃えています（安全度＝労働環境リスクの裏返し）。
+                各スコアは 0〜100 で、<b>高いほど良い向き</b>に揃えています（労働環境スコア＝労働環境リスクの裏返し）。
                 <b>将来性</b>＝成長の見込み／<b>生産性</b>＝一人当たり売上／<b>働きやすさ</b>＝残業・有給・定着など／
-                <b>安全度</b>＝労働環境の健全性。グレードは根拠つきで、詳細画面のタブから確認できます。
+                <b>労働環境</b>＝公開データ上の労働環境の確認度。グレードは根拠つきで、詳細画面のタブから確認できます。
                 算出方法は <a href="/methodology">スコアの算出方法</a> をご覧ください。
               </p>
             </div>
@@ -360,8 +361,8 @@ export default function HomePage() {
 
           <div className="fit" id="fit">
             <div className="fit__head">
-              <span className="fit__title">🎯 あなたに合う会社を探す</span>
-              <span className="fit__hint">重視することを選ぶと「マッチ度」で並び替えます</span>
+              <span className="fit__title">🎯 重視条件から探す</span>
+              <span className="fit__hint">重視することを選ぶと「一致度」で並び替えます（適性検査ではありません）</span>
               {priorities.length > 0 && (
                 <button className="fit__clear" onClick={() => { setPriorities([]); setSort('growth') }}>
                   クリア
@@ -438,7 +439,7 @@ export default function HomePage() {
               aria-pressed={promisingOnly}
               onClick={() => setPromisingOnly((v) => !v)}
             >
-              <span aria-hidden="true">🚀 </span>将来性の高い企業のみ（60点以上）
+              <span aria-hidden="true">🚀 </span>成長シグナルが強い（独自指標60点以上）
             </button>
             {gemIds.size > 0 && (
               <button
@@ -446,7 +447,7 @@ export default function HomePage() {
                 aria-pressed={gemsOnly}
                 onClick={() => setGemsOnly((v) => !v)}
               >
-                <span aria-hidden="true">💎 </span>隠れ優良企業のみ（{gemIds.size}）
+                <span aria-hidden="true">⭐ </span>注目企業候補のみ（{gemIds.size}）
               </button>
             )}
             {dataset.hasLabor && (
@@ -467,7 +468,12 @@ export default function HomePage() {
             </button>
           </div>
 
-          <div className="result-meta" id="results" aria-live="polite">
+          <p className="score-caveat" id="results">
+            <span className="score-caveat__key">{FOUR_WAY_KEY}</span>
+            <span>{SCORE_CAVEAT}</span>
+          </p>
+
+          <div className="result-meta" aria-live="polite">
             {filtered.length} 社中 {Math.min(visibleCount, filtered.length)} 社を表示中
           </div>
 
