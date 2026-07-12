@@ -9,6 +9,14 @@ type Labor = WorkabilityInput & { avgAge?: number }
 const list = companies as unknown as { name: string; laborReal?: Labor }[]
 
 describe('実データの労働指標', () => {
+  it('有給取得率・平均勤続年数を0で欠損補完しない（未記入は未公表）', () => {
+    // add-shokuba の 0 取り込み欠陥の回帰防止。実在しない0はデータに残さない。
+    const pl0 = list.filter((c) => c.laborReal?.paidLeaveRate === 0)
+    const tenure0 = list.filter((c) => c.laborReal?.avgTenureYears === 0)
+    expect(pl0).toHaveLength(0)
+    expect(tenure0).toHaveLength(0)
+  })
+
   it('離職率（3年以内）を実データで持つ企業が一定数ある', () => {
     const withTurnover = list.filter((c) => c.laborReal?.turnover3yrRate != null)
     // 現状 約380社。大幅に減ったら再取得の欠落を疑う。

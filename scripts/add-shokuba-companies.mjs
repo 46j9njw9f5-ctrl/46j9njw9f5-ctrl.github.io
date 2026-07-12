@@ -118,11 +118,13 @@ async function main() {
     const emp = num(cols[COL.size])
     if (!inRange(emp, 1, 5_000_000)) return
     const ot = inRange(num(cols[COL.overtime]), 0, 200) ? num(cols[COL.overtime]) : null
-    const pl = inRange(num(cols[COL.paidLeave]), 0, 100) ? num(cols[COL.paidLeave]) : null
+    // 有給取得率・平均勤続年数の「0」は未記入セルの誤取り込みが大半のため、未公表(null)として扱う
+    // （enrich-shokuba.mjs と同じ >0 条件に統一。0 を欠損値としてそのまま保存しない）。
+    const pl = inRange(num(cols[COL.paidLeave]), 0.01, 100) ? num(cols[COL.paidLeave]) : null
     const wm = inRange(num(cols[COL.women]), 0, 100) ? num(cols[COL.women]) : null
     if (ot === null && pl === null && wm === null) return
     const age = inRange(num(cols[COL.age]), 15, 70) ? num(cols[COL.age]) : null
-    const tenure = inRange(num(cols[COL.tenure]), 0, 50) ? num(cols[COL.tenure]) : null
+    const tenure = inRange(num(cols[COL.tenure]), 0.01, 50) ? num(cols[COL.tenure]) : null
     const jsicRaw = String(cols[COL.industry] || '').trim()
     const foundedM = String(cols[COL.founded] || '').match(/(\d{4})/)
     candidates.push({
